@@ -13,37 +13,22 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
         FAIL    = '\033[91m FAIL \033[0m'
 
 
-    dirpath     = '/proc/net'
-    tcp_path    = dirpath + '/tcp'
-    tcp6_path   = dirpath + '/tcp6'
-    udp_path    = dirpath + '/udp'
-    udp6_path   = dirpath + '/udp6'
+    cdirpath     = directory.rstrip('/') + '/'
 
     flist_format = []
-    flist_format.append(tcp_path)
-    flist_format.append(tcp6_path)
-    flist_format.append(udp_path)
-    flist_format.append(udp6_path) # TODO: path construction, f args
+    for file_name in files_list:
+        flist_format.append(cdirpath + file_name.strip('/'))
 
-    # TODO: testing functions
-    # fails:
-    #
-    #flist_format.append(dirpath + '/netfilter')
-    #flist_format.append(dirpath + 'notexist')
-    #dirpath = '/proc/notexist' #
-
-    cdirpath = dirpath # TODO: formatting '/' duplicates, function args
-
-    # directory check
+    # directory check, don't check files if this fails
     sys.stdout.write('Checking path: ' + cdirpath.ljust(24) + ' ... ')
     if not osp.exists(cdirpath):
-        passed = False
         sys.stdout.write(CHECK_RESULTS.FAIL + '\n')
         sys.stderr.write('Path ' + cdirpath + ' does not exist or not accessible. Check OS.\n')
+        return not passed
     elif not osp.isdir(cdirpath):
-        passed = False
         sys.stdout.write(CHECK_RESULTS.FAIL + '\n')
         sys.stderr.write('Path ' + cdirpath + ' is not a directory. \n')
+        return not passed
     else:
         sys.stdout.write(CHECK_RESULTS.OK + '\n')
 
@@ -101,12 +86,16 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
 
 
 def main():
-    os_filesystem_check(directory='/proc/net///', files_list=[
+    if os_filesystem_check(directory='/proc/net///', files_list=[
         '/tcp',
         '//tcp6',
         'udp',
         'udp6'
-    ], filetype_pattern=': empty$')
+    ], filetype_pattern=': empty$'):
+        with open('/proc/net/tcp', 'r') as ftcp:
+            print(ftcp.read())
+        with open('/proc/net/tcp6', 'r') as ftcp:
+            print(ftcp.read())
 
     sys.stdout.write("Done.\n")
     exit(0)
