@@ -3,7 +3,9 @@ import sys
 import subprocess
 import os.path as osp
 
+from tcp_structs import FileTCP
 
+# TODO: refactor
 def os_filesystem_check(directory, files_list, filetype_pattern):
 
     passed = True
@@ -96,6 +98,10 @@ def main():
             print(ftcp.read())
         with open('/proc/net/tcp6', 'r') as ftcp:
             print(ftcp.read())
+
+    ftcp = FileTCP('/proc/net/tcp')
+    ftcp.read_tcp_struct()
+    ftcp.print_entries()
 
     sys.stdout.write("Done.\n")
     exit(0)
