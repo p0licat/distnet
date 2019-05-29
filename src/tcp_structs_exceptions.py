@@ -1,6 +1,7 @@
 
 import sys
 
+#TODO: restructure exceptions and inheritance
 class InitializationError(Exception):
     def __init__(self, message, case):
         super(InitializationError, self).__init__(message)
