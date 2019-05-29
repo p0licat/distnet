@@ -3,7 +3,7 @@
     hexadecimal, and formats found in /proc/net/ files in Linux.
 """
 
-from tcp_structs_exceptions import EntryInitError, HexadecimalIpFormatError, \
+from tcp_structs_exceptions import EntryTCP_InitError, HexadecimalIpFormatError, \
     HexadecimalPortFormatError, EntryTCP_FormatError
 
 def hexa_dict():

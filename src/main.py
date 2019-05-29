@@ -1,5 +1,7 @@
+import os
+import sys
 
-from tcp_structs import FileTCP
+from tcp_file_handler import FileTCP
 from os_check import os_filesystem_check
 
 def main():
@@ -11,13 +13,20 @@ def main():
     ], filetype_pattern=': empty$'):
         with open('/proc/net/tcp', 'r') as ftcp:
             print(ftcp.read())
+            print("End file.\n\n")
         with open('/proc/net/tcp6', 'r') as ftcp:
             print(ftcp.read())
+            print("End file.\n\n")
+
+    # 2> /dev/null
+    redir_std = open(os.devnull, 'w')
+    sys.stderr = redir_std
 
     ftcp = FileTCP('/proc/net/tcp')
     ftcp.read_tcp_struct()
     ftcp.print_entries()
 
+    redir_std.close()
     sys.stdout.write("Done.\n")
     exit(0)
 

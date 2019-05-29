@@ -6,7 +6,7 @@ import pytest
 from src.tcp_structs import C_STATE
 from src.tcp_structs_exceptions import EntryTCP_FormatError
 from src.tcp_file_handler import FileTCP, EntryTCP
-from src.hexa_manip import int_from_string
+from src.hex_manip import int_from_string
 
 from test_tcp_file_entry import     check_field_ip, \
                                     check_field_string, \

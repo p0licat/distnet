@@ -1,16 +1,21 @@
 
 import sys
 
-#TODO: restructure exceptions and inheritance
-class InitializationError(Exception):
-    def __init__(self, message, case):
-        super(InitializationError, self).__init__(message)
-        self.string = case
-        sys.stderr.write(self.string)
 
-class EntryInitError(Exception):
+#TODO: restructure exceptions and inheritance
+
+class EntryTCP_Error(Exception):
+    def __init__(self, message):
+        super(EntryTCP_Error, self).__init__(message)
+
+class EntryTCP_FormatError(EntryTCP_Error):
     def __init__(self, message, case):
-        super(EntryInitError, self).__init__(message)
+        super(EntryTCP_FormatError, self).__init__(message)
+        sys.stderr.write(case)
+
+class EntryTCP_InitError(EntryTCP_Error):
+    def __init__(self, message, case):
+        super(EntryTCP_InitError, self).__init__(message)
         self.string = case
         sys.stderr.write(self.string)
 
@@ -26,7 +31,12 @@ class HexadecimalPortFormatError(Exception):
         self.string = case
         sys.stderr.write(self.string)
 
-class EntryTCP_FormatError(Exception):
+class FileTCP_Error(Exception):
+    def __init__(self, message):
+        super(FileTCP_InitError, self).__init__(message)
+
+class FileTCP_InitError(FileTCP_Error):
     def __init__(self, message, case):
-        super(EntryTCP_FormatError, self).__init__(message)
-        sys.stderr.write(case)
+        super(FileTCP_InitError, self).__init__(message)
+        self.string = case
+        sys.stderr.write(self.string)

@@ -8,7 +8,7 @@ import pytest
 
 from src.tcp_structs import C_STATE
 from src.tcp_file_entry import EntryTCP
-from src.hexa_manip import int_from_string
+from src.hex_manip import int_from_string
 
 @pytest.fixture
 def EntryTCP_testing():

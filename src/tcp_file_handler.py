@@ -10,12 +10,12 @@ class FileTCP(object):
         self.removed_lines = 0
 
         if type(path) is not str or path == "":
-            raise InitializationError("Not a valid path string: ", "{0}".format(path))
+            raise FileTCP_InitError("Not a valid path string: ", "{0}".format(path))
 
     def parse_entries(self):
 
         if self.data == None:
-            raise InitializationError("Fatal error, no data to parse.", "Tried with path: {0}".format(self.path))
+            raise FileTCP_InitError("Fatal error, no data to parse.", "Tried with path: {0}".format(self.path))
 
         self.entries = self.data.split("\n")
 
@@ -33,7 +33,8 @@ class FileTCP(object):
 
                     try:
                         self.entries[index] = EntryTCP(self.entries[index])
-                    except EntryTCP_FormatError as fe:
+                    #except EntryTCP_FormatError as fe:
+                    except:
                         # lines with incorrect format are removed
                         self.removed_lines += 1
                         del self.entries[index]

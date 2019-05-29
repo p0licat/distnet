@@ -1,8 +1,8 @@
 
 from tcp_structs_exceptions import EntryTCP_FormatError
-from hexa_manip import ip_from_hex, port_from_hex, int_from_string
+from hex_manip import ip_from_hex, port_from_hex, int_from_string
 
-from src.tcp_structs import C_STATE
+from tcp_structs import C_STATE
 
 class EntryTCP(object):
     def __init__(self, entry_line):
@@ -16,7 +16,7 @@ class EntryTCP(object):
         #   * entry.state       ->  0x1 -> 0xB matching C_STATE
 
         if not type(entry_line) is str:
-            raise EntryInitError('Entry line must be string. {0}'.format(entry_line), entry_line)
+            raise EntryTCP_InitError('Entry line must be string. {0}'.format(entry_line), entry_line)
 
 
         self.string = entry_line
@@ -39,13 +39,13 @@ class EntryTCP(object):
                 ssplit.append(item)
 
         if len(self.string) < 120:
-            raise EntryTCP_FormatError('Line length not recognized as /proc/net format.', "Length was: {0}".format(len(self.string)))
+            raise EntryTCP_FormatError('Line length not recognized as /proc/net format.', "Length was: {0}\n".format(len(self.string)))
 
         if len(ssplit) < 2:
-            raise EntryTCP_FormatError("Columns were less than expected.", 'Number of columns: {0}, with expected: ??'.format(len(ssplit)))
+            raise EntryTCP_FormatError("Columns were less than expected.", 'Number of columns: {0}, with expected: ??\n'.format(len(ssplit)))
 
         if ssplit[0] == 'sl':
-            raise EntryTCP_FormatError("Header line.", "Found header line identifier: {0}".format(ssplit[0]))
+            raise EntryTCP_FormatError("Header line.", "Found header line identifier: {0}\n".format(ssplit[0]))
 
         entry_number = ssplit[0]
         local_addr_field = ssplit[1]

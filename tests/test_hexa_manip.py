@@ -2,7 +2,7 @@
 import re
 
 
-from src.hexa_manip import hexa_dict
+from src.hex_manip import hexa_dict
 
 
 def test_hexa_dict():
