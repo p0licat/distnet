@@ -1,10 +1,17 @@
-done:
-
-    [x]    * write tests
-    [o]    * unused variables + warnings, coverage
-    [o]    * packet trace git push
-
-TODO:
-    # TODO: separate tests for header
-    # todo_ rename ip_from_hexa , port_from_hexa
-    # TODO: test for existing file
+Completed TODO:
+    [x] # TODO: separate tests for header
+    [x] # todo_ rename ip_from_hexa , port_from_hexa
+    [x] # TODO: test for existing file
+    [ ] # TODO: continue test function untill it's not not done
+    [ ] # todo: simulate stdout
+    [ ] # TODO: cross check
+    [ ] # TODO: not used
+    [ ] # TODO: add regex
+    [ ] # TODO: import from FileTCP tests?
+    [ ] # TODO: restructure exceptions and inheritance
+    [ ] # TODO: stream tests
+    [ ] # TODO: continue test function untill it's not not done
+    [ ] # TODO: pattern
+    [ ] # TODO: refactor
+    [ ] # TODO: test before next todo
+    [ ] # TODO: refactor into *_from_ -> from() : 1. check 2. call int_from

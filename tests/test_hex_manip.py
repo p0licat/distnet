@@ -2,13 +2,13 @@
 import re
 
 
-from src.hex_manip import hexa_dict
+from src.hex_manip import hex_dict
 
 
-def test_hexa_dict():
+def test_hex_dict():
     m_ptr = re.compile(r'[0-9a-fA-F]')
 
-    hd = hexa_dict()
+    hd = hex_dict()
 
     for i in hd.keys():
         assert m_ptr.match(i) # NoneType on fail

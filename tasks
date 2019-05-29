@@ -1,5 +1,18 @@
 Tasks:
-	view connections []
+
+
+    [x]    * write tests
+	[x]    * view connections
+    [ ]    * unused variables + warnings, coverage
+    [ ]    * packet trace git push
+    [ ]    * arguments for script usage
+    [ ]    * packaging https://medium.com/small-things-about-python/lets-talk-about-python-packaging-6d84b81f1bb5
+	[ ]	   * exceptions files
+	[ ]	   * write log to file command line option / arg
+
+	#testing
+	[ ]	   * test with diferent files
+
 
 Linux files:
 	/proc/net/tcp, /proc/net/tcp6

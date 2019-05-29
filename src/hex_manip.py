@@ -6,7 +6,7 @@
 from tcp_structs_exceptions import EntryTCP_InitError, HexadecimalIpFormatError, \
     HexadecimalPortFormatError, EntryTCP_FormatError
 
-def hexa_dict():
+def hex_dict():
     h_dict = {}
     ind = 0
     for i in    [str(i) for i in range(10)] + \
@@ -19,7 +19,7 @@ def hexa_dict():
 
 def int_from_string(hex_string):
 
-    hd = hexa_dict()
+    hd = hex_dict()
     value = 0
     i = 0
     for char in hex_string[::-1]:
@@ -35,7 +35,7 @@ def int_from_string(hex_string):
 
 
 def ip_from_hex(string):
-    h_dict = hexa_dict()
+    h_dict = hex_dict()
 
     rval = ""
     if len(string) != 8:
@@ -56,7 +56,7 @@ def ip_from_hex(string):
     return rval.rstrip('.')
 
 def port_from_hex(string):
-    h_dict = hexa_dict()
+    h_dict = hex_dict()
 
     rval = 0
     if len(string) != 4:
