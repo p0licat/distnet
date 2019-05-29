@@ -1,9 +1,7 @@
-
-#todo: check imports
-from tcp_structs_exceptions import EntryInitError, HexadecimalIpFormatError, \
-    HexadecimalPortFormatError, EntryTCP_FormatError, InitializationError
-from hexa_manip import ip_from_hex, port_from_hex, int_from_string
-
+"""
+    Defines connection state structs as specified in the Linux kernel.
+    Accessed from /proc/net/tcp.
+"""
 
 class C_STATE:
     established     = 0x1

@@ -8,10 +8,15 @@ from src.tcp_structs_exceptions import EntryTCP_FormatError
 from src.tcp_file_handler import FileTCP, EntryTCP
 from src.hexa_manip import int_from_string
 
+from test_tcp_file_entry import     check_field_ip, \
+                                    check_field_string, \
+                                    check_field_port, \
+                                    check_field_state
+
 #regular patterns for /proc/net/tcp file
 re_ipaddr_mchr = re.compile(r'[\.0-9]')
 re_port_mchr = re.compile(r'[0-9]')
-re_connection_state_mchr = re.compile(r'[0-9A-F]{1,2}') # TODO: not used
+
 re_hexadecimal_str_mchr_line = re.compile(r'[0-9abcdefABCDEF\.]{7,17}') # TODO: use in hexadecimal data getter
 re_hexa_addr_mchr_line = re.compile(r'[0-9abcdefABCDEF]{1,5}') # TODO: use in hexadecimal data getter
 
@@ -36,71 +41,34 @@ def test_read_tcp_struct_file(FileTCP_testing):
 
     # entries populated
     assert type(tcpf.entries) is list
-    assert tcpf.entries != []
+    assert tcpf.entries != [] # tests fail without networking enabled!
     assert len(tcpf.entries) > 0
 
     # check entry list
     for entry in tcpf.entries:
         assert isinstance(entry, EntryTCP)
 
-        assert type(entry.string) is str
-
-        assert type(entry.local_ip) is str
-        assert len(entry.local_ip) > 7 and len(entry.local_ip) < 17
-        for char in entry.local_ip:
-            assert type(char) is str
-            assert len(char) == 1
-            assert re_ipaddr_mchr.match(char) != None
-
-        assert type(entry.local_port) is str
-        assert len(entry.local_port) > 0 and len(entry.local_port) <= 5
-        for char in entry.local_port:
-            assert type(char) is str and len(char) == 1
-            assert re_port_mchr.match(char) != None
-        # try conversion to int
         try:
-            port = int(entry.local_port)
-            assert True
-            assert port >= 0 and port <= 65535
-        except Exception as ex:
+            check_field_string(entry.string)
+        except:
             assert False
 
-        assert type(entry.dest_ip) is str
-        assert entry.dest_ip != None
-        assert len(entry.dest_ip) > 7 and len(entry.dest_ip) < 17
-        for char in entry.dest_ip:
-            assert type(char) is str and len(char) == 1
-            assert re_ipaddr_mchr.match(char) != None
-
-        assert type(entry.dest_port) is str
-        assert len(entry.dest_port) > 0 and len(entry.dest_port) < 5
-        for char in entry.dest_port:
-            assert type(char) is str and len(char) == 1
-            assert re_port_mchr.match(char) != None
-        # try conversion to int
         try:
-            port = int(entry.dest_port)
-            assert True
-            assert port >= 0 and port <= 65535
-        except Exception as ex:
+            check_field_ip(entry.local_ip)
+            check_field_ip(entry.dest_ip)
+        except:
             assert False
 
-        assert type(entry.state) is not None
-        assert type(entry.state) is str
-        # try conversion to int
         try:
-            int_from_string(entry.state)
-        except Exception as ex:
-            sys.stderr.write(ex)
+            check_field_port(entry.local_port)
+            check_field_port(entry.dest_port)
+        except:
             assert False
 
-        assert type(int_from_string(entry.state)) is int
-        state_int = int_from_string(entry.state)
-
-        # conversion test
-        assert type(C_STATE.string_from_hex(state_int)) is str
-        assert C_STATE.hex_from_string( C_STATE.string_from_hex(state_int) ) == state_int
-
+        try:
+            check_field_state(entry.state)
+        except:
+            assert False
 
 def test_read_tcp_struct_string(FileTCP_testing):
 
@@ -126,70 +94,31 @@ def test_read_tcp_struct_string(FileTCP_testing):
 
     assert len(tcpf.entries) > 0
     for entry in tcpf.entries:
-
         assert isinstance(entry, EntryTCP)
-        assert type(entry.string) is str
-
-        assert type(entry.local_ip) is str
-        assert len(entry.local_ip) > 7 and len(entry.local_ip) < 17
-        for char in entry.local_ip:
-            assert type(char) is str
-            assert len(char) == 1
-            assert re_ipaddr_mchr.match(char) != None
-
-        assert type(entry.local_port) is str
-        assert len(entry.local_port) > 0 and len(entry.local_port) <= 5
-        for char in entry.local_port:
-            assert type(char) is str and len(char) == 1
-            assert re_port_mchr.match(char) != None
 
         try:
-            port = int(entry.local_port)
-            assert True
-            assert port >= 0 and port <= 65535
-        except Exception as ex:
-            assert False
-
-        assert type(entry.dest_ip) is str
-        assert entry.dest_ip != None
-        assert len(entry.dest_ip) > 7 and len(entry.dest_ip) < 17
-        for char in entry.dest_ip:
-            assert type(char) is str and len(char) == 1
-            assert re_ipaddr_mchr.match(char) != None
-
-
-        assert type(entry.dest_port) is str
-        assert len(entry.dest_port) > 0 and len(entry.dest_port) < 5
-        for char in entry.dest_port:
-            assert type(char) is str and len(char) == 1
-            assert re_port_mchr.match(char) != None
-
-        try:
-            port = int(entry.dest_port)
-            assert True
-            assert port >= 0 and port <= 65535
-        except Exception as ex:
-            assert False
-
-        assert type(entry.state) is not None
-        assert type(entry.state) is str
-
-        # TODO: entry fields tests functions / methods
-        # TODO: entry.state int?
-        try:
-            int_from_string(entry.state)
+            check_field_string(entry.string)
         except:
             assert False
 
-        assert type(int_from_string(entry.state)) is int
-        state_int = int_from_string(entry.state)
+        try:
+            check_field_ip(entry.local_ip)
+            check_field_ip(entry.dest_ip)
+        except:
+            assert False
 
-        assert type(C_STATE.string_from_hex(state_int)) is str
-        assert C_STATE.hex_from_string( C_STATE.string_from_hex(state_int) ) == state_int
+        try:
+            check_field_port(entry.local_port)
+            check_field_port(entry.dest_port)
+        except:
+            assert False
 
+        try:
+            check_field_state(entry.state)
+        except:
+            assert False
 
     # TODO: continue test function untill it's not not done
-    # test for existing file
 
 
 def test_print_entries():

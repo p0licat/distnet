@@ -1,10 +1,6 @@
 
-from src.tcp_file_entry import EntryTCP
-
-
+from tcp_file_entry import EntryTCP
 from tcp_structs_exceptions import EntryTCP_FormatError
-
-#from src.tcp_structs import C_STATE
 
 class FileTCP(object):
     def __init__(self, path):
