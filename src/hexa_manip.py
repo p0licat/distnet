@@ -7,20 +7,16 @@ from tcp_structs_exceptions import EntryInitError, HexadecimalIpFormatError, \
     HexadecimalPortFormatError, EntryTCP_FormatError
 
 def hexa_dict():
-    # hexa dict generation
     h_dict = {}
-    for i in range(0, 10):
-        h_dict[str(i)] = i # eww, refactor list comprejenjo
-    ind = 10
-    for i in 'abcdef':
-        h_dict[i] = ind
-        h_dict[str(i).upper()] = ind
+    ind = 0
+    for i in    [str(i) for i in range(10)] + \
+                [chr(0x61 + i) for i in range(6)] + \
+                [chr(0x41 + i) for i in range(6)]:
+        h_dict[i] = ind if ind <= 15 else ind - 6
         ind += 1
-    # end hexa dict generation
+
     return h_dict
 
-# TODO: refactor into *_from_ -> from() : 1. check 2. call int_from
-# TODO: separate tests for header
 def int_from_string(hex_string):
 
     hd = hexa_dict()
@@ -37,8 +33,8 @@ def int_from_string(hex_string):
 
     return value
 
-# todo_ rename ip_from_hexa , port_from_hexa
-def ip_from_hexa(string):
+
+def ip_from_hex(string):
     h_dict = hexa_dict()
 
     rval = ""
@@ -59,13 +55,15 @@ def ip_from_hexa(string):
         rval += str(value) + '.'
     return rval.rstrip('.')
 
-def port_from_hexa(string):
+def port_from_hex(string):
     h_dict = hexa_dict()
 
     rval = 0
     if len(string) != 4:
          raise HexadecimalPortFormatError('Not a valid hexadeimal port string.', string)
 
+    # TODO: test before next todo
+    # TODO: refactor into *_from_ -> from() : 1. check 2. call int_from
     s = string[::-1]
 
     i = 0

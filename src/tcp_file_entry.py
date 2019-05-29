@@ -1,11 +1,19 @@
 
 from tcp_structs_exceptions import EntryTCP_FormatError
-from hexa_manip import ip_from_hexa, port_from_hexa, int_from_string
+from hexa_manip import ip_from_hex, port_from_hex, int_from_string
 
 from src.tcp_structs import C_STATE
 
 class EntryTCP(object):
     def __init__(self, entry_line):
+
+        # entries have fields:
+        #   * entry.string      ->  initializer string of EntryTCP constructor
+        #   * entry.local_ip    ->  local IP string : re.compile(r'[\.0-9]')
+        #   * entry.local_port  ->  local port string : re.compile(r'[0-9]')
+        #   * entry.dest_ip     ->  dest IP string : re.compile(r'[\.0-9]')
+        #   * entry.dest_port   ->  dest port string : re.compile(r'[0-9]')
+        #   * entry.state       ->  0x1 -> 0xB matching C_STATE
 
         if not type(entry_line) is str:
             raise EntryInitError('Entry line must be string. {0}'.format(entry_line), entry_line)
@@ -51,8 +59,8 @@ class EntryTCP(object):
         str_ip = s_addr_field[0]
         str_port = s_addr_field[1]
 
-        ip = ip_from_hexa(str_ip)
-        port = port_from_hexa(str_port)
+        ip = ip_from_hex(str_ip)
+        port = port_from_hex(str_port)
 
         self.local_ip = ip
         self.local_port = port
@@ -61,8 +69,8 @@ class EntryTCP(object):
         str_ip = s_addr_field[0]
         str_port = s_addr_field[1]
 
-        ip = ip_from_hexa(str_ip)
-        port = port_from_hexa(str_port)
+        ip = ip_from_hex(str_ip)
+        port = port_from_hex(str_port)
 
         self.dest_ip = ip
         self.dest_port = port

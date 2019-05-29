@@ -2,7 +2,7 @@
 #todo: check imports
 from tcp_structs_exceptions import EntryInitError, HexadecimalIpFormatError, \
     HexadecimalPortFormatError, EntryTCP_FormatError, InitializationError
-from hexa_manip import ip_from_hexa, port_from_hexa, int_from_string
+from hexa_manip import ip_from_hex, port_from_hex, int_from_string
 
 
 class C_STATE:

@@ -1,0 +1,9 @@
+done:
+
+    [x]    * write tests
+    [o]    * unused variables + warnings, coverage
+    [o]    * packet trace git push
+
+TODO:
+    # TODO: separate tests for header
+    # todo_ rename ip_from_hexa , port_from_hexa

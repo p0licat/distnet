@@ -1,21 +1,17 @@
 import re
-
 import sys
-
 import pytest
 
 
 from src.tcp_structs import C_STATE
 from src.tcp_structs_exceptions import EntryTCP_FormatError
-
 from src.tcp_file_handler import FileTCP, EntryTCP
-
 from src.hexa_manip import int_from_string
 
 #regular patterns for /proc/net/tcp file
 re_ipaddr_mchr = re.compile(r'[\.0-9]')
 re_port_mchr = re.compile(r'[0-9]')
-re_connection_state_mchr = re.compile(r'[0-9]{1,2}') # TODO: not used
+re_connection_state_mchr = re.compile(r'[0-9A-F]{1,2}') # TODO: not used
 re_hexadecimal_str_mchr_line = re.compile(r'[0-9abcdefABCDEF\.]{7,17}') # TODO: use in hexadecimal data getter
 re_hexa_addr_mchr_line = re.compile(r'[0-9abcdefABCDEF]{1,5}') # TODO: use in hexadecimal data getter
 
@@ -38,15 +34,15 @@ def test_read_tcp_struct_file(FileTCP_testing):
 
     tcpf.read_tcp_struct() # read from file
 
+    # entries populated
     assert type(tcpf.entries) is list
     assert tcpf.entries != []
-
     assert len(tcpf.entries) > 0
 
-    assert len(tcpf.entries) > 0
+    # check entry list
     for entry in tcpf.entries:
-
         assert isinstance(entry, EntryTCP)
+
         assert type(entry.string) is str
 
         assert type(entry.local_ip) is str
@@ -61,7 +57,7 @@ def test_read_tcp_struct_file(FileTCP_testing):
         for char in entry.local_port:
             assert type(char) is str and len(char) == 1
             assert re_port_mchr.match(char) != None
-
+        # try conversion to int
         try:
             port = int(entry.local_port)
             assert True
@@ -76,13 +72,12 @@ def test_read_tcp_struct_file(FileTCP_testing):
             assert type(char) is str and len(char) == 1
             assert re_ipaddr_mchr.match(char) != None
 
-
         assert type(entry.dest_port) is str
         assert len(entry.dest_port) > 0 and len(entry.dest_port) < 5
         for char in entry.dest_port:
             assert type(char) is str and len(char) == 1
             assert re_port_mchr.match(char) != None
-
+        # try conversion to int
         try:
             port = int(entry.dest_port)
             assert True
@@ -92,8 +87,7 @@ def test_read_tcp_struct_file(FileTCP_testing):
 
         assert type(entry.state) is not None
         assert type(entry.state) is str
-
-        # TODO: entry.state int?
+        # try conversion to int
         try:
             int_from_string(entry.state)
         except Exception as ex:
@@ -103,6 +97,7 @@ def test_read_tcp_struct_file(FileTCP_testing):
         assert type(int_from_string(entry.state)) is int
         state_int = int_from_string(entry.state)
 
+        # conversion test
         assert type(C_STATE.string_from_hex(state_int)) is str
         assert C_STATE.hex_from_string( C_STATE.string_from_hex(state_int) ) == state_int
 
@@ -179,6 +174,7 @@ def test_read_tcp_struct_string(FileTCP_testing):
         assert type(entry.state) is not None
         assert type(entry.state) is str
 
+        # TODO: entry fields tests functions / methods
         # TODO: entry.state int?
         try:
             int_from_string(entry.state)
