@@ -4,11 +4,20 @@ Tasks:
     [x]    * write tests
 	[x]    * view connections
     [ ]    * unused variables + warnings, coverage
+                pip coverage, pylint
     [ ]    * packet trace git push
     [ ]    * arguments for script usage
     [ ]    * packaging https://medium.com/small-things-about-python/lets-talk-about-python-packaging-6d84b81f1bb5
-	[ ]	   * exceptions files
+	[ ]	   * exceptions restructure
 	[ ]	   * write log to file command line option / arg
+	[ ]    * databases
+	[ ]	   * setup.py and packaging
+    [ ]    * virtualenv, pypi,
+    [ ]    * branch into:
+                2.7
+                3.4
+    [ ]    * pylint:
+                bad exception string passing style
 
 	#testing
 	[ ]	   * test with diferent files
