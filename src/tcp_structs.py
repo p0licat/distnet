@@ -1,5 +1,6 @@
 """
     Defines connection state structs as specified in the Linux kernel.
+    https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/net/tcp_states.h
     Accessed from /proc/net/tcp.
 """
 
@@ -50,12 +51,19 @@ class C_STATE:
 
     @staticmethod
     def string_from_hex(value):
+        """
+            Returns connection type name, defined the C_STATE class or by
+            net/tcp_states.h in the Linux kernel.
+        """
         C_STATE.check_bounds(value)
         return C_STATE.strings[value] if value in C_STATE.strings else None
 
     @staticmethod
     def hex_from_string(string):
-
+        """
+            Returns value correlated to the connection state string.
+            Defined by C_STATE class, or net/tcp_states.h
+        """
         if type(string) is not str:
             raise TypeError("Function requires str as argument.")
 

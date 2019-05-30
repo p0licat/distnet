@@ -19,6 +19,12 @@ class EntryTCP_InitError(EntryTCP_Error):
         self.string = case
         sys.stderr.write(self.string)
 
+class HexadecimalStringFormatError(Exception):
+    def __init__(self, message, case):
+        super(HexadecimalIpFormatError, self).__init__(message)
+        self.string = case
+        sys.stderr.write(self.string)
+
 class HexadecimalIpFormatError(Exception):
     def __init__(self, message, case):
         super(HexadecimalIpFormatError, self).__init__(message)

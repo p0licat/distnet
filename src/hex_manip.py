@@ -3,10 +3,14 @@
     hexadecimal, and formats found in /proc/net/ files in Linux.
 """
 
-from tcp_structs_exceptions import EntryTCP_InitError, HexadecimalIpFormatError, \
-    HexadecimalPortFormatError, EntryTCP_FormatError
+#TODO: exceptions
+from src.tcp_structs_exceptions import HexadecimalIpFormatError, \
+    HexadecimalPortFormatError, HexadecimalStringFormatError
 
 def hex_dict():
+    """
+        Returns dictionary of the format {str('[0-9a-fA-F]'): dec(0x_key)}
+    """
     h_dict = {}
     ind = 0
     for i in    [str(i) for i in range(10)] + \
@@ -18,7 +22,9 @@ def hex_dict():
     return h_dict
 
 def int_from_string(hex_string):
-
+    """
+        Converts hex string to integer.
+    """
     hd = hex_dict()
     value = 0
     i = 0
@@ -35,6 +41,9 @@ def int_from_string(hex_string):
 
 
 def ip_from_hex(string):
+    """
+        Converts hex ip string ("1122AA44") to decimal notation (x.x.x.x).
+    """
     h_dict = hex_dict()
 
     rval = ""
@@ -56,11 +65,14 @@ def ip_from_hex(string):
     return rval.rstrip('.')
 
 def port_from_hex(string):
+    """
+        Converts hex port string to decimal port (0, 65535)
+    """
     h_dict = hex_dict()
 
     rval = 0
     if len(string) != 4:
-         raise HexadecimalPortFormatError('Not a valid hexadeimal port string.', string)
+        raise HexadecimalPortFormatError('Not a valid hexadeimal port string.', string)
 
     # TODO: test before next todo
     # TODO: refactor into *_from_ -> from() : 1. check 2. call int_from

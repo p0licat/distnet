@@ -1,4 +1,6 @@
-
+"""
+    Utilities for OS level filesystem checks.
+"""
 import re
 import sys
 import subprocess
@@ -7,15 +9,24 @@ import os.path as osp
 
 # TODO: refactor
 def os_filesystem_check(directory, files_list, filetype_pattern):
-
+    """
+        Checks if file types match pattern.
+        Input:
+            directory = str : path to directory, eg. "/proc/net"
+            files_list = list : list of str, eg. "["f1", "f2"]"
+            filetype_pattern = str: eg. " empty$"
+    """
     passed = True
 
     class CHECK_RESULTS:
-        OK      = '\033[92m OK \033[0m'
-        FAIL    = '\033[91m FAIL \033[0m'
+        """
+            ANSI escape sequences for colored output.
+        """
+        OK = '\033[92m OK \033[0m'
+        FAIL = '\033[91m FAIL \033[0m'
 
 
-    cdirpath     = directory.rstrip('/') + '/'
+    cdirpath = directory.rstrip('/') + '/'
 
     flist_format = []
     for file_name in files_list:
@@ -34,10 +45,10 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
     else:
         sys.stdout.write(CHECK_RESULTS.OK + '\n')
 
-    # iterate files_list, continue on verification fail with `continue` kw
+    # iterate files_list, continue on verification fail with continue kw
     # files_list will all be checked under cdirpath
-    for file in flist_format:
-        cfile_path = file
+    for file_n in flist_format:
+        cfile_path = file_n
         r_status = CHECK_RESULTS.OK
 
 
@@ -61,18 +72,18 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
             continue
 
         # file type matches pattern
-        p = subprocess.Popen(['file', cfile_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p_proc = subprocess.Popen(['file', cfile_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        subp_out, subp_err = p.communicate()
+        subp_out, subp_err = p_proc.communicate()
 
-        if (subp_err != ''):
+        if subp_err != '':
             passed = False
             r_status = CHECK_RESULTS.FAIL
             sys.stdout.write(r_status + '\n')
             sys.stderr.write('There were errors verifying type of ' + cfile_path + ' ... \n' + subp_err + '\n')
             continue
 
-        pattern_filetype = re.compile(r': empty$') # TODO: pattern
+        pattern_filetype = re.compile(r'' + str(filetype_pattern)) # TODO: pattern
         regex_result = pattern_filetype.search(subp_out)
         if not regex_result:
             passed = False

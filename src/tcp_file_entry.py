@@ -1,10 +1,14 @@
-
-from tcp_structs_exceptions import EntryTCP_FormatError
-from hex_manip import ip_from_hex, port_from_hex, int_from_string
-
-from tcp_structs import C_STATE
+"""
+    Manipulate lines in /proc/net/tcp file.
+"""
+from src.hex_manip import ip_from_hex, port_from_hex, int_from_string
+from src.tcp_structs_exceptions import EntryTCP_FormatError, EntryTCP_InitError
+from src.tcp_structs import C_STATE
 
 class EntryTCP(object):
+    """
+        Validated line in TCP file. Supports conversions from hexadecimal.
+    """
     def __init__(self, entry_line):
 
         # entries have fields:
@@ -35,7 +39,7 @@ class EntryTCP(object):
         ssplit = []
 
         for item in issplit:
-            if item is not '':
+            if item != '':
                 ssplit.append(item)
 
         if len(self.string) < 120:
@@ -53,26 +57,26 @@ class EntryTCP(object):
         conn_state = ssplit[3]
 
         if entry_number[0] == '':
-            raise EntryTCP_FormatError('Line is not a valid entry.', "Entry number is null: {0}".format(st[0]))
+            raise EntryTCP_FormatError('Line is not a valid entry.', "Entry number is null.")
 
         s_addr_field = local_addr_field.split(':')
-        str_ip = s_addr_field[0]
+        ip_hex = s_addr_field[0]
         str_port = s_addr_field[1]
 
-        ip = ip_from_hex(str_ip)
+        ip_dec = ip_from_hex(ip_hex)
         port = port_from_hex(str_port)
 
-        self.local_ip = ip
+        self.local_ip = ip_dec
         self.local_port = port
 
         s_addr_field = dest_addr_field.split(':')
-        str_ip = s_addr_field[0]
+        ip_hex = s_addr_field[0]
         str_port = s_addr_field[1]
 
-        ip = ip_from_hex(str_ip)
+        ip_dec = ip_from_hex(ip_hex)
         port = port_from_hex(str_port)
 
-        self.dest_ip = ip
+        self.dest_ip = ip_dec
         self.dest_port = port
 
         self.state = conn_state
