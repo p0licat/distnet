@@ -122,11 +122,12 @@ def test_read_tcp_struct_string(FileTCP_testing):
 
 
 def test_print_entries():
+
     tcp_path = "/proc/net/tcp"
     tcpf = FileTCP(tcp_path)
     tcpf.read_tcp_struct()
 
-    # todo: simulate stdout
+    # todo: simulate stdout # TODO: stream tests
     try:
         tcpf.print_entries()
     except Exception as ex:
