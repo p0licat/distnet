@@ -59,7 +59,10 @@ def ip_from_hex(string):
         value = 0
         i = 0
         for h_char in pair:
-            value += pow(16, i) * h_dict[h_char]
+            try:
+                value += pow(16, i) * h_dict[h_char]
+            except KeyError:
+                raise HexadecimalIpFormatError('Not a valid IPv4 string.', h_char)
             i += 1
         rval += str(value) + '.'
     return rval.rstrip('.')
@@ -72,7 +75,7 @@ def port_from_hex(string):
 
     rval = 0
     if len(string) != 4:
-        raise HexadecimalPortFormatError('Not a valid hexadeimal port string.', string)
+        raise HexadecimalPortFormatError('Not a valid hexadecimal port string.', string)
 
     # TODO: test before next todo
     # TODO: refactor into *_from_ -> from() : 1. check 2. call int_from

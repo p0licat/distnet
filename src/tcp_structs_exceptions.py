@@ -16,12 +16,12 @@ class EntryTCP_FormatError(EntryTCP_Error):
 class EntryTCP_InitError(EntryTCP_Error):
     def __init__(self, message, case):
         super(EntryTCP_InitError, self).__init__(message)
-        self.string = case
+        self.string = str(case)
         sys.stderr.write(self.string)
 
 class HexadecimalStringFormatError(Exception):
     def __init__(self, message, case):
-        super(HexadecimalIpFormatError, self).__init__(message)
+        super(HexadecimalStringFormatError, self).__init__(message)
         self.string = case
         sys.stderr.write(self.string)
 
@@ -39,7 +39,7 @@ class HexadecimalPortFormatError(Exception):
 
 class FileTCP_Error(Exception):
     def __init__(self, message):
-        super(FileTCP_InitError, self).__init__(message)
+        super(FileTCP_Error, self).__init__(message)
 
 class FileTCP_InitError(FileTCP_Error):
     def __init__(self, message, case):

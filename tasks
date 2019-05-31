@@ -7,6 +7,7 @@ Tasks:
                 pip coverage, pylint
     [ ]    * packet trace git push
     [ ]    * arguments for script usage
+                [ ]     * replace main.py
     [ ]    * packaging https://medium.com/small-things-about-python/lets-talk-about-python-packaging-6d84b81f1bb5
 	[o]	   * exceptions restructure
                 [x] inheritance v1

@@ -62,3 +62,22 @@ def test_c_state():
         assert False
     except ValueError as ex:
         assert True
+
+    try:
+        C_STATE.hex_from_string(13)
+        assert False
+    except TypeError:
+        assert True
+
+    try:
+        C_STATE.hex_from_string("other_value")
+        assert True
+    except: # TODO
+        assert False
+
+
+    try:
+        assert C_STATE.hex_from_string("established") == 1
+        assert True
+    except: # TODO
+        assert False

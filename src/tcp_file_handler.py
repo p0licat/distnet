@@ -1,6 +1,7 @@
 """
     File parser and syntax analysis class, for /proc/net/tcp.
 """
+import re
 import sys
 from src.tcp_file_entry import EntryTCP
 from src.tcp_structs_exceptions import  EntryTCP_Error,\
@@ -12,6 +13,7 @@ class FileTCP(object):
         File data parser.
     """
     def __init__(self, path):
+        self.re_path_mchr = re.compile(r'[a-zA-Z0-9\_\/]') # TODO: practice?
         self.path = path
         self.data = None
         self.entries = None
@@ -20,6 +22,11 @@ class FileTCP(object):
         # TODO: branch to python 2.7
         if type(path) is not str or path == "":
             raise FileTCP_InitError("Not a valid path string: ", "{0}".format(path))
+
+
+        for s_chr in path:
+            if not self.re_path_mchr.match(s_chr):
+                raise FileTCP_InitError('Path contains invalid characters.', s_chr) # TODO: practice
 
     def parse_entries(self):
         """
@@ -30,6 +37,7 @@ class FileTCP(object):
         """
         # TODO: InitError as superclass of FileTCP_NoDataError, msg len
         # TODO: exception for empty file? tests for empty file?
+        # TODO: practice
         if self.data is None:
             raise FileTCP_InitError("Fatal error, no data to parse.", "Tried with path: {0}".format(self.path))
 
@@ -55,8 +63,6 @@ class FileTCP(object):
                         del self.entries[index]
                         done = False
                         break
-                    except EntryTCP_Error:
-                        sys.stdout.write("W: Line number: {0} was omitted... ".format(index))
             if done:
                 break
 
@@ -69,7 +75,7 @@ class FileTCP(object):
             try:
                 with open(self.path, 'r') as tcp_fd:
                     self.data = tcp_fd.read()
-            except IOError:
+            except IOError as io_e:
                 # Errno 2 not exist
                 sys.stderr.write("Error, file not accessible.\n")
         else:

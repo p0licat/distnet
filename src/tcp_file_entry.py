@@ -22,9 +22,12 @@ class EntryTCP(object):
         if not type(entry_line) is str:
             raise EntryTCP_InitError('Entry line must be string. {0}'.format(entry_line), entry_line)
 
+        if entry_line == "" or len(entry_line) < 1:
+            raise EntryTCP_FormatError('Entry line must not be null string.', entry_line)
 
         self.string = entry_line
-        if self.string[0] == '\t' or self.string[-1] == '\t':
+        if self.string[0] == '\t' or self.string[-1] == '\t' or \
+            self.string[0] == ' ' or self.string[-1] == ' ':
             self.string = entry_line.strip('\t ')
 
         self.local_ip = None
@@ -45,7 +48,7 @@ class EntryTCP(object):
         if len(self.string) < 120:
             raise EntryTCP_FormatError('Line length not recognized as /proc/net format.', "Length was: {0}\n".format(len(self.string)))
 
-        if len(ssplit) < 2:
+        if len(ssplit) < 17:
             raise EntryTCP_FormatError("Columns were less than expected.", 'Number of columns: {0}, with expected: ??\n'.format(len(ssplit)))
 
         if ssplit[0] == 'sl':
@@ -55,9 +58,6 @@ class EntryTCP(object):
         local_addr_field = ssplit[1]
         dest_addr_field = ssplit[2]
         conn_state = ssplit[3]
-
-        if entry_number[0] == '':
-            raise EntryTCP_FormatError('Line is not a valid entry.', "Entry number is null.")
 
         s_addr_field = local_addr_field.split(':')
         ip_hex = s_addr_field[0]

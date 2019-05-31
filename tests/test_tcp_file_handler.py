@@ -13,6 +13,7 @@ from test_tcp_file_entry import     check_field_ip, \
                                     check_field_port, \
                                     check_field_state
 
+from src.tcp_structs_exceptions import FileTCP_Error, FileTCP_InitError
 #regular patterns for /proc/net/tcp file
 re_ipaddr_mchr = re.compile(r'[\.0-9]')
 re_port_mchr = re.compile(r'[0-9]')
@@ -22,10 +23,35 @@ re_hexa_addr_mchr_line = re.compile(r'[0-9abcdefABCDEF]{1,5}') # TODO: use in he
 
 
 tcp_path = '/proc/net/tcp'
+not_accessible_path = 'tests/chroot/proc/net/notaccessible'
 
 @pytest.fixture
 def FileTCP_testing():
     return FileTCP(tcp_path)
+
+@pytest.fixture
+def FileTCP_testing_PathNotAccessible():
+    return FileTCP(not_accessible_path)
+
+def test_tcp_file_handler_InitFails():
+    try:
+        FileTCP(13)
+        assert False
+    except FileTCP_InitError:
+        assert True
+
+    try:
+        FileTCP("\'proc\'")
+        assert False
+    except FileTCP_InitError:
+        assert True
+
+
+    try:
+        FileTCP("]]proc]")
+        assert False
+    except FileTCP_InitError:
+        assert True
 
 def test_read_tcp_struct_file(FileTCP_testing):
 
@@ -36,6 +62,12 @@ def test_read_tcp_struct_file(FileTCP_testing):
     assert type(tcpf.path) is str and tcpf.path == tcp_path
     assert type(tcpf.data) is type(None)
     assert type(tcpf.entries) is type(None)
+
+    try:
+        tcpf.parse_entries()
+        assert False
+    except FileTCP_InitError:
+        assert True
 
     tcpf.read_tcp_struct() # read from file
 
@@ -119,6 +151,12 @@ def test_read_tcp_struct_string(FileTCP_testing):
             assert False
 
     # TODO: continue test function untill it's not not done
+
+
+def test_read_tcp_struct_PathNotAccessible(FileTCP_testing_PathNotAccessible):
+    tcpf = FileTCP_testing_PathNotAccessible
+    tcpf.read_tcp_struct()
+    assert tcpf.data == None
 
 
 def test_print_entries():

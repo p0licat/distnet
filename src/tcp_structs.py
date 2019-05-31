@@ -67,9 +67,6 @@ class C_STATE:
         if type(string) is not str:
             raise TypeError("Function requires str as argument.")
 
-        if string not in C_STATE.strings.values():
-            return None
-
         for value in range(C_STATE.lower_bound, C_STATE.upper_bound + 1):
             if C_STATE.strings[value] == string:
                 return value

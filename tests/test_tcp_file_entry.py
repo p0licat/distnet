@@ -10,11 +10,8 @@ from src.tcp_structs import C_STATE
 from src.tcp_file_entry import EntryTCP
 from src.hex_manip import int_from_string
 
-@pytest.fixture
-def EntryTCP_testing():
-    data = "0: F100A8C0:CDF4 E511D9AC:01BB 01 00000000:00000000 00:00000000 00000000  1000        0 29965 1 ffff932537491800 24 4 30 10 -1"
-    etcp = EntryTCP(data)
-    return etcp
+from src.tcp_structs_exceptions import EntryTCP_Error, EntryTCP_InitError, \
+    EntryTCP_FormatError
 
 def check_field_ip(field):
     re_ipaddr_mchr = re.compile(r'[\.0-9]')
@@ -64,11 +61,15 @@ def check_field_state(field):
     assert type(C_STATE.string_from_hex(state_int)) is str
     assert C_STATE.hex_from_string( C_STATE.string_from_hex(state_int) ) == state_int
 
-
 def check_field_string(string):
     assert type(string) is str
     assert len(string) > 100 # TODO: cross check
 
+@pytest.fixture
+def EntryTCP_testing():
+    data = "0: F100A8C0:CDF4 E511D9AC:01BB 01 00000000:00000000 00:00000000 00000000  1000        0 29965 1 ffff932537491800 24 4 30 10 -1"
+    etcp = EntryTCP(data)
+    return etcp
 
 def test_EntryTCP_instance(EntryTCP_testing):
     try:
@@ -83,3 +84,45 @@ def test_EntryTCP_instance(EntryTCP_testing):
     check_field_port(etcp.local_port)
     check_field_port(etcp.dest_port)
     check_field_state(etcp.state)
+
+    assert isinstance(str(etcp), str)
+
+def test_EntryTCP_init_Fails():
+    try:
+        EntryTCP(1)
+        assert False
+    except EntryTCP_InitError:
+        assert True
+    except EntryTCP_Error:
+        assert False
+
+    try:
+        EntryTCP("                  0: F100A8C0:CDF4 E511D9AC:01BB 01 00000000:00000000 00:00000000 00000000  1000        0 29965 1 ffff932537491800 24 4 30 10 -1        ")
+    except:
+        assert False
+
+    # TODO: specialized exceptions
+    try:
+        EntryTCP("")
+        assert False
+    except EntryTCP_FormatError:
+        assert True
+
+    try:
+        EntryTCP("aaalookatme")
+        assert False
+    except EntryTCP_FormatError:
+        assert True
+
+    try:
+        EntryTCP("0: F100A8C0:CDF4 E511D9AC:01BBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ")
+        assert False
+    except EntryTCP_FormatError:
+        assert True
+
+
+    try:
+        EntryTCP("  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode    XXX X X X X XX XXXX XXX XXXXX XXXX XXX XXXX XX XX X XXX XXXX")
+        assert False
+    except EntryTCP_FormatError:
+        assert True
