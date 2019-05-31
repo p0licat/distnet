@@ -3,28 +3,46 @@ Tasks:
 
     [x]    * write tests
 	[x]    * view connections
-    [ ]    * unused variables + warnings, coverage
+    [x]    * unused variables + warnings, coverage
                 pip coverage, pylint
     [ ]    * packet trace git push
     [ ]    * arguments for script usage
     [ ]    * packaging https://medium.com/small-things-about-python/lets-talk-about-python-packaging-6d84b81f1bb5
-	[ ]	   * exceptions restructure
+	[o]	   * exceptions restructure
+                [x] inheritance v1
+                [ ] inheritance v2
 	[ ]	   * write log to file command line option / arg
 	[ ]    * databases
-	[ ]	   * setup.py and packaging
     [ ]    * virtualenv, pypi,
+    [ ]	   * setup.py and packaging
     [ ]    * branch into:
                 2.7
                 3.4
-    [ ]    * pylint:
-                bad exception string passing style
+    [x]    * pylint:
+                [x] full revision
+                [ ] 2.7, 3.4
+                [ ] bad exception string passing style
+    [x]    * coverage
+                [x] running
+                [ ] full tests
 
 	#testing
-	[ ]	   * test with diferent files
+	[x]	   * test with diferent files
+    [ ]    * renaming
+    #style
+    [ ]    * check names and rename
 
-
+    # !
+    [ ]    Popen file -> file -E !
 Linux files:
 	/proc/net/tcp, /proc/net/tcp6
 		These /proc interfaces provide information about currently active TCP connections, and are implemented by tcp4_seq_show() in net/ipv4/tcp_ipv4.c and tcp6_seq_show() in net/ipv6/tcp_ipv6.c, respectively.
 		(https://www.kernel.org/doc/Documentation/networking/proc_net_tcp.txt)
+        https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/net/tcp_states.h
+        https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/ipv4/tcp.c
+
 		https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/net
+        https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/net/tcp_states.h
+        https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/socket.c
+        https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/ipv4/datagram.c
+        https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/net/ipv4/tcp.c
