@@ -19,9 +19,21 @@ Tasks:
 
 	[ ]    * databases
     [ ]    * virtualenv, pypi, setup.py and packaging
-    [ ]    * branch into:
-                2.7
-                3.4
+                [x]     directory structure
+                [x]     setup.py
+                        [ ]     syntax
+                [ ]     tox
+                [ ]     reading:
+                        [ ]     https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure
+                        [ ]     https://docs.pytest.org/en/latest/goodpractices.html#tox
+                        [ ]     https://packaging.python.org/overview/
+                        [ ]     https://setuptools.readthedocs.io/en/latest/
+    [x]    * branch into:
+                [x]     master
+                [x]     develop
+                [ ]     visual_map
+                [ ]     text_map
+
     [x]    * pylint:
                 [x] full revision
                 [ ] 2.7, 3.4 or master, develop, feature1,2,3
@@ -39,6 +51,8 @@ Tasks:
 
     # functionality
     [x]    Popen file -> file -E !
+
+    [ ]     Documentation generator i.e. sphinx
 
 Completed TODO:
     [x] # TODO: separate tests for header
