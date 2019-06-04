@@ -1,7 +1,7 @@
 
-from src.tcp_structs import C_STATE
-from src.tcp_file_entry import EntryTCP
-from src.hex_manip import int_from_string
+from distnet.tcp_structs import C_STATE
+from distnet.tcp_file_entry import EntryTCP
+from distnet.hex_manip import int_from_string
 
 
 def test_c_state():

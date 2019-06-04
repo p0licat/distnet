@@ -2,8 +2,8 @@
 import re
 
 
-from src.hex_manip import hex_dict, int_from_string, ip_from_hex, port_from_hex
-from src.tcp_structs_exceptions import HexadecimalStringFormatError, \
+from distnet.hex_manip import hex_dict, int_from_string, ip_from_hex, port_from_hex
+from distnet.tcp_structs_exceptions import HexadecimalStringFormatError, \
     HexadecimalIpFormatError, HexadecimalPortFormatError
 
 def test_hex_dict():

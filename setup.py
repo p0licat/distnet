@@ -1,16 +1,14 @@
-from distutils.core import setup
+from setuptools import setup, find_packages
 
 setup(
     name='distnet',
-    version='0.1.0',
+    version='0.1.3',
     author='pawel',
     author_email='pawel@local.host',
-    packages=['src'],
-    scripts=[''], # TODO: scripts and src restructure
+    packages=find_packages(exclude=['tests']),
+    scripts=['test_entry_point.py'], # TODO: scripts and src restructure
     url='http://pypi.python.org/pypi/none',
     license='LICENSE.txt',
     description='Linux networking tools in python.',
     long_description=open('README.txt').read(),
-    #install_requires=[
-    #],
 )

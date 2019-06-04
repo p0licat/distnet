@@ -1,5 +1,5 @@
 
-from src.os_check import os_filesystem_check
+from distnet.os_check import os_filesystem_check
 
 def test_os_filesystem_check_empty():
     try:

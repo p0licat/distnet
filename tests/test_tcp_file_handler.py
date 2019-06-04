@@ -3,17 +3,17 @@ import sys
 import pytest
 
 
-from src.tcp_structs import C_STATE
-from src.tcp_structs_exceptions import EntryTCP_FormatError
-from src.tcp_file_handler import FileTCP, EntryTCP
-from src.hex_manip import int_from_string
+from distnet.tcp_structs import C_STATE
+from distnet.tcp_structs_exceptions import EntryTCP_FormatError
+from distnet.tcp_file_handler import FileTCP, EntryTCP
+from distnet.hex_manip import int_from_string
 
 from test_tcp_file_entry import     check_field_ip, \
                                     check_field_string, \
                                     check_field_port, \
                                     check_field_state
 
-from src.tcp_structs_exceptions import FileTCP_Error, FileTCP_InitError
+from distnet.tcp_structs_exceptions import FileTCP_Error, FileTCP_InitError
 #regular patterns for /proc/net/tcp file
 re_ipaddr_mchr = re.compile(r'[\.0-9]')
 re_port_mchr = re.compile(r'[0-9]')

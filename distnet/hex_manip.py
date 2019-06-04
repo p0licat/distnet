@@ -4,7 +4,7 @@
 """
 
 #TODO: exceptions
-from src.tcp_structs_exceptions import HexadecimalIpFormatError, \
+from tcp_structs_exceptions import HexadecimalIpFormatError, \
     HexadecimalPortFormatError, HexadecimalStringFormatError
 
 def hex_dict():
