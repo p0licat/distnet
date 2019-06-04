@@ -1,2 +1,5 @@
-#!/bin/bash
-python distnet/main.py 
+#!/usr/bin/python
+
+from distnet.main import main
+
+main()

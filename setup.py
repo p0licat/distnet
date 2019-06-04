@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='distnet',
-    version='0.1.3',
+    version='0.1.4',
     author='pawel',
     author_email='pawel@local.host',
     packages=find_packages(exclude=['tests']),
