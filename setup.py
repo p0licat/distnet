@@ -1,8 +1,14 @@
 from setuptools import setup, find_packages
 
+__version__ = '0.1.42'
+
+with open('distnet/VERSION', 'w') as fd:
+    fd.write(__version__)
+    fd.close()
+
 setup(
     name='distnet',
-    version='0.1.41',
+    version=__version__,
     author='pawel',
     author_email='pawel@local.host',
     packages=find_packages(exclude=['tests']),
