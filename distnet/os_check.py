@@ -8,6 +8,8 @@ import subprocess
 import os.path as osp
 
 # TODO: refactor
+# idea 1: into check_path and check_files
+# idea 2: 
 def os_filesystem_check(directory, files_list, filetype_pattern):
     """
         Checks if file types match pattern.
@@ -36,7 +38,6 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
     sys.stdout.write('Checking path: ' + cdirpath.ljust(24) + ' ... ')
     if not osp.exists(cdirpath.rstrip('/')):
         # unlike isdir(), exists() fails with trailing '/'
-        sys.stderr.write(cdirpath)
         sys.stdout.write(CHECK_RESULTS.FAIL + '\n')
         sys.stderr.write('Path ' + cdirpath + ' does not exist or not accessible. Check OS.\n')
         return not passed

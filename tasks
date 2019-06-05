@@ -6,11 +6,13 @@ Tasks:
     [x]    * unused variables + warnings, coverage
                 [x] pip coverage, pylint
 
+    !!![ ]      PKG_RESOURACES
     [ ]    * arguments for script usage
                 [ ]    * replace main.py
                 [ ]	   * write log to file command line option / arg
                 [ ]    * https://docs.python.org/3.5/library/optparse.html
-                [ ]    * https://docs.python.org/3.5/library/argparse.html
+                [x]    * https://docs.python.org/3.5/library/argparse.html #1
+                [ ]    * https://docs.python.org/3.5/library/argparse.html #2
 
     [ ]    * packaging https://medium.com/small-things-about-python/lets-talk-about-python-packaging-6d84b81f1bb5
 	[o]	   * exceptions restructure
@@ -20,8 +22,12 @@ Tasks:
 	[ ]    * databases
     [ ]    * virtualenv, pypi, setup.py and packaging
                 [x]     directory structure
-                [x]     setup.py
-                        [ ]     syntax
+                [x]     setup.py setuptools
+                        [x]     syntax
+                        [x]     versioning system
+                        [ ]         pkg_resources
+                        [ ]         restructure
+                        [ ]     ? tests? pylint?
                 [ ]     tox
                 [ ]     reading:
                         [ ]     https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure
@@ -54,11 +60,20 @@ Tasks:
 
     [ ]     Documentation generator i.e. sphinx
 
+    # versioning
+        https://python-packaging.readthedocs.io/en/latest/non-code-files.html
+        https://stackoverflow.com/questions/6028000/how-to-read-a-static-file-from-inside-a-python-package
+        http://peak.telecommunity.com/DevCenter/PythonEggs#accessing-package-resources
+
+    #TODO: script interface for checking /proc/net/tcp
+
+    #TODO: generalize file parser libraries (inheritance?) for other system files ...logging/network mampping
+
 Completed TODO:
     [x] # TODO: separate tests for header
     [x] # todo_ rename ip_from_hexa , port_from_hexa
     [x] # TODO: test for existing file
-    [ ] # TODO: continue test function untill it's not not done
+    [x] # TODO: continue test function untill it's not not done
     [ ] # todo: simulate stdout
     [ ] # TODO: cross check
     [ ] # TODO: not used

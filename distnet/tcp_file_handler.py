@@ -5,8 +5,8 @@ import re
 import sys
 from tcp_file_entry import EntryTCP
 from tcp_structs_exceptions import  EntryTCP_Error,\
-                                        EntryTCP_FormatError, \
-                                        FileTCP_InitError
+                                    EntryTCP_FormatError, \
+                                    FileTCP_InitError
 
 class FileTCP(object):
     """

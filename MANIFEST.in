@@ -1,0 +1,2 @@
+include distnet/VERSION
+include distnet/*.py

@@ -73,16 +73,17 @@ def port_from_hex(string):
     """
     h_dict = hex_dict()
 
-    rval = 0
     if len(string) != 4:
         raise HexadecimalPortFormatError('Not a valid hexadecimal port string.', string)
 
+    #TODO: verify for removal
+    #rval = 0
     # TODO: test before next todo
     # TODO: refactor into *_from_ -> from() : 1. check 2. call int_from
-    s = string[::-1]
-
-    i = 0
-    for h_char in s:
-        rval += pow(16, i) * h_dict[h_char]
-        i += 1
-    return str(rval)
+    # s = string[::-1]
+    #
+    # i = 0
+    # for h_char in s:
+    #     rval += pow(16, i) * h_dict[h_char]
+    #     i += 1
+    return str(int_from_string(string))

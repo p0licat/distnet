@@ -1,3 +1,7 @@
+"""
+    Entry point.
+    TODO: restructure project tree
+"""
 import argparse
 
 import time
@@ -10,7 +14,8 @@ from os_check import os_filesystem_check
 
 __version__ = None
 
-with open('distnet/VERSION', 'r') as fd:
+#TODO: this is broken.
+with open('./VERSION', 'r') as fd:
     __version__ = fd.read()
     fd.close()
 
@@ -18,9 +23,9 @@ def main():
 
     parser = argparse.ArgumentParser()
 
+    parser.add_argument("-v", "--verbose", action="store_true", help="verbose output")
     parser.add_argument("-c", "--continuous", action="store_true", help="refreshes output")
     parser.add_argument("--version", action="store_true", help="prints version of this package")
-    parser.add_argument("-v", "--verbose", action="store_true", help="verbose output")
     #parser.add_argument("-w", "--write") # TODO:
 
     args = parser.parse_args()
@@ -48,9 +53,10 @@ def main():
     redir_std = open(os.devnull, 'w')
     sys.stderr = redir_std
 
-    time_sleep = 1 # TODO: args?
+    time_sleep = 1 # TODO: default-valued int argument argparse
 
     if args.continuous == True:
+        # TODO: catch interrupt signal CTRL+C, OS
         while True:
             ftcp = FileTCP('/proc/net/tcp')
             ftcp.read_tcp_struct()

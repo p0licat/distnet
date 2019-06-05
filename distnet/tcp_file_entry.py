@@ -80,7 +80,6 @@ class EntryTCP(object):
         self.dest_port = port
 
         self.state = conn_state
-        # TODO: continue test function untill it's not not done
 
     def __str__(self):
         rstr = ""
