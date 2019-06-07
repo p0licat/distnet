@@ -12,10 +12,14 @@ import sys
 from tcp_file_handler import FileTCP
 from os_check import os_filesystem_check
 
+import pkg_resources
+
+template = pkg_resources.resource_filename(__name__, 'resources/VERSION')
+
 __version__ = None
 
 #TODO: this is broken.
-with open('./VERSION', 'r') as fd:
+with open(template, 'r') as fd:
     __version__ = fd.read()
     fd.close()
 

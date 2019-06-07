@@ -1,2 +1,2 @@
-include distnet/VERSION
+recursive-include distnet/resources/*
 include distnet/*.py
