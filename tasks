@@ -8,32 +8,43 @@ Tasks:
 
     !!![ ]      PKG_RESOURACES
     [ ]    * arguments for script usage
-                [ ]    * replace main.py
-                [ ]	   * write log to file command line option / arg
-                [ ]    * https://docs.python.org/3.5/library/optparse.html
-                [x]    * https://docs.python.org/3.5/library/argparse.html #1
-                [ ]    * https://docs.python.org/3.5/library/argparse.html #2
+                [x]    * replace main.py
+                            [x]     __main__.py
+                            [x]     script-like
 
-    [ ]    * packaging https://medium.com/small-things-about-python/lets-talk-about-python-packaging-6d84b81f1bb5
+                [x]	   * write log to file command line option / arg
+                            [ ]       syntax, csv, ?
+                            [ ]       read files?
+                            [ ]       unique ips
+                            [ ]       mapper
+                            [ ]       session
+
+                [ ]    * https://docs.python.org/3.5/library/optparse.html
+                [x]    * https://docs.python.org/3.5/library/argparse.html
+
 	[o]	   * exceptions restructure
                 [x] inheritance v1
                 [ ] inheritance v2
 
-	[ ]    * databases
+	[ ]    * databases / file output
+            [x]     v1: file output
+            [ ]     v2: output structure
+
     [ ]    * virtualenv, pypi, setup.py and packaging
                 [x]     directory structure
                 [x]     setup.py setuptools
                         [x]     syntax
                         [x]     versioning system
-                        [ ]         pkg_resources
+                        [x]         pkg_resources
                         [ ]         restructure
                         [ ]     ? tests? pylint?
+                        [ ]     NS resolve (TcpEntry field?) / ip -> resolved-as
                 [ ]     tox
-                [ ]     reading:
-                        [ ]     https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure
-                        [ ]     https://docs.pytest.org/en/latest/goodpractices.html#tox
-                        [ ]     https://packaging.python.org/overview/
-                        [ ]     https://setuptools.readthedocs.io/en/latest/
+                [x]     reading:
+                        [x]     https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure
+                        [x]     https://docs.pytest.org/en/latest/goodpractices.html#tox
+                        [x]     https://packaging.python.org/overview/
+                        [x]     https://setuptools.readthedocs.io/en/latest/
     [x]    * branch into:
                 [x]     master
                 [x]     develop
@@ -64,9 +75,9 @@ Tasks:
         https://python-packaging.readthedocs.io/en/latest/non-code-files.html
         https://stackoverflow.com/questions/6028000/how-to-read-a-static-file-from-inside-a-python-package
         http://peak.telecommunity.com/DevCenter/PythonEggs#accessing-package-resources
+        [x]    * packaging https://medium.com/small-things-about-python/lets-talk-about-python-packaging-6d84b81f1bb5
 
     #TODO: script interface for checking /proc/net/tcp
-
     #TODO: generalize file parser libraries (inheritance?) for other system files ...logging/network mampping
 
 Completed TODO:

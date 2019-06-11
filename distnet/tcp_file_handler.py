@@ -86,6 +86,9 @@ class FileTCP(object):
         else:
             self.parse_entries()
 
+    def get_entries(self):
+        return self.entries
+
     def print_entries(self):
         """
             Prints EntryTCP objects to stdout, one item per line.

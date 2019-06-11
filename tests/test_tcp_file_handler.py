@@ -73,7 +73,7 @@ def test_read_tcp_struct_file(FileTCP_testing):
 
     # entries populated
     assert type(tcpf.entries) is list
-    assert tcpf.entries != [] # tests fail without networking enabled!
+    assert tcpf.entries != [] # tests fail without networking enabled or empty file
     assert len(tcpf.entries) > 0
 
     # check entry list

@@ -1,2 +1,3 @@
-recursive-include distnet/resources/*
+recursive-include distnet/resources/ *
 include distnet/*.py
+exclude distnet/*.pyc

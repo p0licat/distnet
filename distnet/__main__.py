@@ -30,6 +30,7 @@ def main():
     parser.add_argument("-v", "--verbose", action="store_true", help="verbose output")
     parser.add_argument("-c", "--continuous", action="store_true", help="refreshes output")
     parser.add_argument("--version", action="store_true", help="prints version of this package")
+    parser.add_argument("--output", action="append", help="file to write to", type=argparse.FileType('w'))
     #parser.add_argument("-w", "--write") # TODO:
 
     args = parser.parse_args()
@@ -54,19 +55,36 @@ def main():
                 print("End file.\n\n")
 
     # 2> /dev/null
-    redir_std = open(os.devnull, 'w')
-    sys.stderr = redir_std
+    redir_stderr = open(os.devnull, 'w')
+    sys.stderr = redir_stderr
 
     time_sleep = 1 # TODO: default-valued int argument argparse
 
+    if args.output != None:
+        fd_args = args.output[0]
+        sys.stdout = fd_args
+
+
     if args.continuous == True:
         # TODO: catch interrupt signal CTRL+C, OS
+        history_ips = dict()
         while True:
+
             ftcp = FileTCP('/proc/net/tcp')
             ftcp.read_tcp_struct()
-            ftcp.print_entries()
+
+            if args.output == None:
+                ftcp.print_entries() # TODO: get_entries,
+                sys.stdout.write("----\n")
+            else:
+                en = ftcp.get_entries()
+                for entry in en:
+                    if entry.dest_ip not in history_ips.keys():
+                        history_ips[entry.dest_ip] = True
+                        sys.stdout.write(entry.dest_ip + '\n')
+
             time.sleep(1)
-            sys.stdout.write("----\n")
+            sys.stdout.flush()
     else:
         ftcp = FileTCP('/proc/net/tcp')
         ftcp.read_tcp_struct()
@@ -74,6 +92,10 @@ def main():
 
     redir_std.close()
     sys.stdout.write("Done.\n")
+
+    if args.output != None:
+        args.output.close()
+
     exit(0)
 
 if __name__ == '__main__':
