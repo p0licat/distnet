@@ -3,6 +3,14 @@
 """
 import re
 import sys
+
+
+import matplotlib
+from mpl_toolkits.basemap import Basemap
+import numpy as np
+import matplotlib.pyplot as plt
+
+
 from tcp_file_entry import EntryTCP
 from tcp_structs_exceptions import  EntryTCP_Error,\
                                     EntryTCP_FormatError, \
@@ -88,6 +96,9 @@ class FileTCP(object):
 
     def get_entries(self):
         return self.entries
+
+    def draw_map(self):
+        pass # TODO: pygal
 
     def print_entries(self):
         """

@@ -2,6 +2,10 @@
     Entry point.
     TODO: restructure project tree
 """
+
+import socket
+
+
 import argparse
 
 import time
@@ -14,14 +18,19 @@ from os_check import os_filesystem_check
 
 import pkg_resources
 
-template = pkg_resources.resource_filename(__name__, 'resources/VERSION')
+versionFile = pkg_resources.resource_filename(__name__, 'resources/VERSION')
 
 __version__ = None
 
-#TODO: this is broken.
-with open(template, 'r') as fd:
+with open(versionFile, 'r') as fd:
     __version__ = fd.read()
     fd.close()
+
+def query_ns(ns_ip, dest_ip):
+    try:
+        return str(socket.gethostbyaddr(dest_ip)[0])
+    except socket.herror as he:
+        return str("")
 
 def main():
 
@@ -31,10 +40,9 @@ def main():
     parser.add_argument("-c", "--continuous", action="store_true", help="refreshes output")
     parser.add_argument("--version", action="store_true", help="prints version of this package")
     parser.add_argument("--output", action="append", help="file to write to", type=argparse.FileType('w'))
-    #parser.add_argument("-w", "--write") # TODO:
+    parser.add_argument("--ns_list", action="append", help="space separated ip addresses of nameservers to query")
 
     args = parser.parse_args()
-    #print(args)
 
     if args.version == True:
         print("Version is: " + str(__version__))
@@ -64,6 +72,9 @@ def main():
         fd_args = args.output[0]
         sys.stdout = fd_args
 
+    ns_list = []
+    if args.ns_list != None:
+        ns_list = args.ns_list
 
     if args.continuous == True:
         # TODO: catch interrupt signal CTRL+C, OS
@@ -74,14 +85,20 @@ def main():
             ftcp.read_tcp_struct()
 
             if args.output == None:
-                ftcp.print_entries() # TODO: get_entries,
+                ftcp.print_entries()
                 sys.stdout.write("----\n")
             else:
                 en = ftcp.get_entries()
                 for entry in en:
                     if entry.dest_ip not in history_ips.keys():
                         history_ips[entry.dest_ip] = True
-                        sys.stdout.write(entry.dest_ip + '\n')
+                        ns_formatted = ""
+                        for ns_ip in ns_list:
+                            sys.stdout.write("Warning: DNS changed to default ... ")
+                            ns_formatted += " " + query_ns(ns_ip, entry.dest_ip) + " "
+                        sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
+
+            ftcp.draw_map()
 
             time.sleep(1)
             sys.stdout.flush()

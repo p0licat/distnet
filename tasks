@@ -59,6 +59,9 @@ Tasks:
                 [x] running
                 [x] full tests coverage
 
+    [ ]      DNS query
+            https://routley.io/tech/2017/12/28/hand-writing-dns-messages.html
+
 	#testing
 	[x]	   * test with diferent files
     [ ]    * renaming
@@ -79,21 +82,3 @@ Tasks:
 
     #TODO: script interface for checking /proc/net/tcp
     #TODO: generalize file parser libraries (inheritance?) for other system files ...logging/network mampping
-
-Completed TODO:
-    [x] # TODO: separate tests for header
-    [x] # todo_ rename ip_from_hexa , port_from_hexa
-    [x] # TODO: test for existing file
-    [x] # TODO: continue test function untill it's not not done
-    [ ] # todo: simulate stdout
-    [ ] # TODO: cross check
-    [ ] # TODO: not used
-    [ ] # TODO: add regex
-    [ ] # TODO: import from FileTCP tests?
-    [ ] # TODO: restructure exceptions and inheritance
-    [ ] # TODO: stream tests
-    [ ] # TODO: continue test function untill it's not not done
-    [ ] # TODO: pattern
-    [ ] # TODO: refactor
-    [ ] # TODO: test before next todo
-    [ ] # TODO: refactor into *_from_ -> from() : 1. check 2. call int_from
