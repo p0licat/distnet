@@ -30,6 +30,9 @@ re_hexa_addr_mchr_line = re.compile(r'[0-9abcdefABCDEF]{1,5}') # TODO: use in he
 tcp_path = '/proc/net/tcp'
 not_accessible_path = 'tests/chroot/proc/net/notaccessible'
 
+if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "str_true":
+    tcp_path = 'tests/chroot/proc/net/tcp'
+
 @pytest.fixture
 def FileTCP_testing():
     return FileTCP(tcp_path)
