@@ -1,6 +1,5 @@
 """
     Entry point.
-    TODO: restructure project tree
 """
 
 import contextlib
@@ -8,12 +7,8 @@ with contextlib.redirect_stdout(None):
     import pygame
 
 import signal
-
-
 import argparse
-
 import time
-
 import os
 import sys
 
@@ -44,13 +39,7 @@ def world(x, y, gameDisplay_obj, img_location):
     try:
         gameDisplay_obj.blit(pygame.image.load(img_location), (x, y))
     except pygame.error as pe:
-        print('frame rdop')
-
-
-
-
-
-
+        print('Image draw error.')
 
 def main():
 
@@ -130,24 +119,8 @@ def main():
                         history_ips[entry.dest_ip] = True
                         ns_formatted = ""
 
-                        # if args.visual == True:
-                        #     tdata = query_whois(query_ns(entry.dest_ip))
-                        #     try:
-                        #         tdata = tdata.text
-                        #     except AttributeError as ae:
-                        #         continue
-                        #     #print("rvalue text: ")
-                        #     #print(tdata)
-                        #     cdata = []
-                        #     for i in tdata.split('\n'):
-                        #         if 'Registrant Country:' in i:
-                        #             ccode = i.split(' ')[2].rstrip('\r').rstrip('\n').rstrip()
-                        #             ccode = ccode.lower()
-                        #             cdata.append(ccode)
-                        #             cdict[ccode] = 1 if ccode not in cdict else cdict[ccode] + 1
-                        #
-                        #     for i in cdata:
-                        #         print(cdata)
+                        # continuous mode
+
 
                         if args.resolve == True:
                             ns_formatted += " " + resolve_hostname(entry.dest_ip) + " "  + " "
@@ -159,9 +132,10 @@ def main():
                     if entry.dest_ip not in history_ips.keys():
                         history_ips[entry.dest_ip] = True
                         ns_formatted = ""
-                        # !!!!!!
-                        sys.stdout.write("Warning: DNS changed to default ... ")
-                        ns_formatted += " " + query_ns(ns_ip, entry.dest_ip) + " " + query_whois(query_ns(ns_ip, entry.dest_ip)).__dict__ + " EOFF "
+
+                        if args.resolve == True:
+                            ns_formatted += " " + resolve_hostname(entry.dest_ip) + " "  + " "
+
                         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
 
             if args.visual == True:

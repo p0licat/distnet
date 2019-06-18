@@ -39,7 +39,7 @@ Tasks:
                         [x]         pkg_resources
                         [ ]         restructure
                         [ ]     ? tests? pylint?
-                        [ ]     NS resolve (TcpEntry field?) / ip -> resolved-as
+                        [x]     NS resolve (TcpEntry field?) / ip -> resolved-as
                 [ ]     tox
                 [x]     reading:
                         [x]     https://blog.ionelmc.ro/2014/05/25/python-packaging/#the-structure
@@ -67,8 +67,8 @@ Tasks:
 
     [x]     WHOIS query
                 [x] implemented as python-whois whois.whois()
-    [ ]     decision tree for country attribution
-    [ ]     script branching redo and branch for graphical mode
+    [x]     decision tree for map drawing
+    [x]     script branching redo and branch for graphical mode
     [ ]     tempfile https://docs.python.org/3.5/library/tempfile.html for a.png
 
 	#testing

@@ -14,8 +14,8 @@ with open(versionFile, 'w') as fd:
 setup(
     name='distnet',
     version=__version__,
-    author='pawel',
-    author_email='pawel@local.host',
+    author='p0licat',
+    author_email='tbodica@gmail.com',
     install_requires=[
         'pygal_maps_world',
         'pygame',

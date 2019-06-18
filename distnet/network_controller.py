@@ -57,9 +57,6 @@ def resolve_location(hostname, verbose=True):
                     cdata.append(ccode)
                     whois_countries[ccode] = 1 if ccode not in whois_countries else whois_countries[ccode] + 1
 
-            # for i in cdata:
-            #     print(cdata)
-
             break
 
         except Exception as ex:

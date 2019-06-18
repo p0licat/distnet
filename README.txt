@@ -1,2 +1,7 @@
-Under construction...
-#TODO: create readme
+Visualizer for TCP connections.
+
+Installation:
+    pip3 install +git http://github.com/
+
+Usage:
+    python -m distnet -h
