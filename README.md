@@ -8,5 +8,6 @@
 
 ### Usage:
   
-  `python3 -m distnet -h
-  python3 -m distnet --visual -c`
+  `python3 -m distnet -h`
+  
+  `python3 -m distnet --visual -c`
