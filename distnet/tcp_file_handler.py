@@ -1,14 +1,14 @@
 """
     File parser and syntax analysis class, for /proc/net/tcp.
 """
+
+#sys.path.insert(0, os.path.abspath('..'))
+
 import re
+import os
 import sys
 
-
-import matplotlib
-from mpl_toolkits.basemap import Basemap
-import numpy as np
-import matplotlib.pyplot as plt
+import pygal
 
 
 from tcp_file_entry import EntryTCP
@@ -16,6 +16,17 @@ from tcp_structs_exceptions import  EntryTCP_Error,\
                                     EntryTCP_FormatError, \
                                     FileTCP_InitError
 
+#
+# from distnet.tcp_file_entry import EntryTCP
+# from distnet.tcp_structs_exceptions import  EntryTCP_Error,\
+#                                     EntryTCP_FormatError, \
+#                                     FileTCP_InitError
+
+#
+# from .tcp_file_entry import EntryTCP
+# from .tcp_structs_exceptions import  EntryTCP_Error,\
+#                                     EntryTCP_FormatError, \
+#                                     FileTCP_InitError
 class FileTCP(object):
     """
         File data parser.
@@ -28,6 +39,7 @@ class FileTCP(object):
         self.removed_lines = 0
 
         # TODO: branch to python 2.7
+        # TODO: isinstance
         if type(path) is not str or path == "":
             raise FileTCP_InitError("Not a valid path string: ", "{0}".format(path))
 
@@ -56,12 +68,15 @@ class FileTCP(object):
             done = True
             for index in range(len(self.entries)):
                 if not isinstance(self.entries[index], EntryTCP):
+                    #TODO: isinstance
                     if type(self.entries[index]) is not str or self.entries[index] == "":
                         # these lines do not pass to EntryTCP constructor
                         self.removed_lines += 1
                         del self.entries[index]
                         done = False
                         break
+
+
 
                     try:
                         self.entries[index] = EntryTCP(self.entries[index])
@@ -71,6 +86,8 @@ class FileTCP(object):
                         del self.entries[index]
                         done = False
                         break
+
+
             if done:
                 break
 
@@ -85,6 +102,7 @@ class FileTCP(object):
                     self.data = tcp_fd.read()
             except IOError as io_e:
                 # Errno 2 not exist
+                sys.stderr.write(str(io_e))
                 sys.stderr.write("Error, file not accessible.\n")
         else:
             self.data = data
@@ -95,10 +113,22 @@ class FileTCP(object):
             self.parse_entries()
 
     def get_entries(self):
+        """
+            Getter for public field.
+        """
         return self.entries
 
-    def draw_map(self):
-        pass # TODO: pygal
+    def draw_map(self, cdict):
+        """
+            Generate map from country dict and entries
+        """
+        worldmap_chart = pygal.maps.world.World()
+        worldmap_chart.title = 'Some countries'
+        worldmap_chart.add('conn dist', cdict)
+        worldmap_chart.render_to_png('a.png') # TODO: tempfile
+
+        self.tempfile_name = None
+
 
     def print_entries(self):
         """

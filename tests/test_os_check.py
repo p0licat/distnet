@@ -1,5 +1,11 @@
 
-from distnet.os_check import os_filesystem_check
+import os
+import sys
+
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
+
+from os_check import os_filesystem_check
 
 def test_os_filesystem_check_empty():
     try:

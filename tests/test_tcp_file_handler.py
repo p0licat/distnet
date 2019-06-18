@@ -1,17 +1,22 @@
+import os
 import re
 import sys
 import pytest
 
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 
-from distnet.tcp_structs import C_STATE
-from distnet.tcp_structs_exceptions import EntryTCP_FormatError
-from distnet.tcp_file_handler import FileTCP, EntryTCP
-from distnet.hex_manip import int_from_string
+# import distnet
+from tcp_structs import C_STATE
+from tcp_structs_exceptions import EntryTCP_FormatError
+from tcp_file_handler import FileTCP
+from tcp_file_entry import EntryTCP
+from hex_manip import int_from_string
 
-from test_tcp_file_entry import     check_field_ip, \
-                                    check_field_string, \
-                                    check_field_port, \
-                                    check_field_state
+from tests.test_tcp_file_entry import   check_field_ip, \
+                                        check_field_string, \
+                                        check_field_port, \
+                                        check_field_state
 
 from distnet.tcp_structs_exceptions import FileTCP_Error, FileTCP_InitError
 #regular patterns for /proc/net/tcp file
@@ -34,24 +39,17 @@ def FileTCP_testing_PathNotAccessible():
     return FileTCP(not_accessible_path)
 
 def test_tcp_file_handler_InitFails():
-    try:
+    with pytest.raises(Exception) as exception_info:
         FileTCP(13)
-        assert False
-    except FileTCP_InitError:
-        assert True
+    assert exception_info.typename == "FileTCP_InitError"
 
-    try:
+    with pytest.raises(Exception) as exception_info:
         FileTCP("\'proc\'")
-        assert False
-    except FileTCP_InitError:
-        assert True
+    assert exception_info.typename == "FileTCP_InitError"
 
-
-    try:
+    with pytest.raises(Exception) as exception_info:
         FileTCP("]]proc]")
-        assert False
-    except FileTCP_InitError:
-        assert True
+    assert exception_info.typename == "FileTCP_InitError"
 
 def test_read_tcp_struct_file(FileTCP_testing):
 
@@ -63,11 +61,11 @@ def test_read_tcp_struct_file(FileTCP_testing):
     assert type(tcpf.data) is type(None)
     assert type(tcpf.entries) is type(None)
 
-    try:
+
+    with pytest.raises(Exception) as exception_info:
         tcpf.parse_entries()
-        assert False
-    except FileTCP_InitError:
-        assert True
+    assert exception_info.typename == "FileTCP_InitError"
+
 
     tcpf.read_tcp_struct() # read from file
 
@@ -78,6 +76,8 @@ def test_read_tcp_struct_file(FileTCP_testing):
 
     # check entry list
     for entry in tcpf.entries:
+        print(type(entry))
+
         assert isinstance(entry, EntryTCP)
 
         try:

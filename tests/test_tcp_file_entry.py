@@ -3,12 +3,18 @@
     TODO: import from FileTCP tests?
 """
 
+import os
+import sys
+
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
+
 import re
 import pytest
 
-from distnet.tcp_structs import C_STATE
-from distnet.tcp_file_entry import EntryTCP
-from distnet.hex_manip import int_from_string
+from tcp_structs import C_STATE
+from tcp_file_entry import EntryTCP
+from hex_manip import int_from_string
 
 from distnet.tcp_structs_exceptions import EntryTCP_Error, EntryTCP_InitError, \
     EntryTCP_FormatError
@@ -88,41 +94,36 @@ def test_EntryTCP_instance(EntryTCP_testing):
     assert isinstance(str(etcp), str)
 
 def test_EntryTCP_init_Fails():
-    try:
-        EntryTCP(1)
-        assert False
-    except EntryTCP_InitError:
-        assert True
-    except EntryTCP_Error:
-        assert False
+    # try:
+    #     EntryTCP(1)
+    #     assert False
+    # except EntryTCP_InitError:
+    #     assert True
+    # except EntryTCP_Error:
+    #     assert False
 
-    try:
-        EntryTCP("                  0: F100A8C0:CDF4 E511D9AC:01BB 01 00000000:00000000 00:00000000 00000000  1000        0 29965 1 ffff932537491800 24 4 30 10 -1        ")
-    except:
-        assert False
+    with pytest.raises(Exception) as exception_info:
+        EntryTCP(1)
+    assert exception_info.typename == "EntryTCP_InitError"
+
+
+
+    assert EntryTCP("                  0: F100A8C0:CDF4 E511D9AC:01BB 01 00000000:00000000 00:00000000 00000000  1000        0 29965 1 ffff932537491800 24 4 30 10 -1        ")
 
     # TODO: specialized exceptions
-    try:
+    with pytest.raises(Exception) as exception_info:
         EntryTCP("")
-        assert False
-    except EntryTCP_FormatError:
-        assert True
+    assert exception_info.typename == "EntryTCP_FormatError"
 
-    try:
+    with pytest.raises(Exception) as exception_info:
         EntryTCP("aaalookatme")
-        assert False
-    except EntryTCP_FormatError:
-        assert True
+    assert exception_info.typename == "EntryTCP_FormatError"
 
-    try:
+    with pytest.raises(Exception) as exception_info:
         EntryTCP("0: F100A8C0:CDF4 E511D9AC:01BBXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX ")
-        assert False
-    except EntryTCP_FormatError:
-        assert True
+    assert exception_info.typename == "EntryTCP_FormatError"
 
 
-    try:
+    with pytest.raises(Exception) as exception_info:
         EntryTCP("  sl  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode    XXX X X X X XX XXXX XXX XXXXX XXXX XXX XXXX XX XX X XXX XXXX")
-        assert False
-    except EntryTCP_FormatError:
-        assert True
+    assert exception_info.typename == "EntryTCP_FormatError"

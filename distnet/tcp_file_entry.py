@@ -1,6 +1,14 @@
 """
     Manipulate lines in /proc/net/tcp file.
 """
+# from distnet.hex_manip import ip_from_hex, port_from_hex, int_from_string
+# from distnet.tcp_structs_exceptions import EntryTCP_FormatError, EntryTCP_InitError
+# from distnet.tcp_structs import C_STATE
+
+# from .hex_manip import ip_from_hex, port_from_hex, int_from_string
+# from .tcp_structs_exceptions import EntryTCP_FormatError, EntryTCP_InitError
+# from .tcp_structs import C_STATE
+#
 from hex_manip import ip_from_hex, port_from_hex, int_from_string
 from tcp_structs_exceptions import EntryTCP_FormatError, EntryTCP_InitError
 from tcp_structs import C_STATE
@@ -22,7 +30,9 @@ class EntryTCP(object):
         if not type(entry_line) is str:
             raise EntryTCP_InitError('Entry line must be string. {0}'.format(entry_line), entry_line)
 
-        if entry_line == "" or len(entry_line) < 1:
+        #TODO: removal
+        #if entry_line == "" or len(entry_line) < 1:
+        if entry_line == "":
             raise EntryTCP_FormatError('Entry line must not be null string.', entry_line)
 
         self.string = entry_line
@@ -54,7 +64,13 @@ class EntryTCP(object):
         if ssplit[0] == 'sl':
             raise EntryTCP_FormatError("Header line.", "Found header line identifier: {0}\n".format(ssplit[0]))
 
-        entry_number = ssplit[0]
+        #entry_number = ssplit[0]
+
+        """
+            See /Documentation for file structure.
+            NUMBER  local_address rem_address   st tx_queue rx_queue tr tm->when retrnsmt   uid  timeout inode
+        """
+
         local_addr_field = ssplit[1]
         dest_addr_field = ssplit[2]
         conn_state = ssplit[3]
@@ -81,10 +97,17 @@ class EntryTCP(object):
 
         self.state = conn_state
 
+    #TODO: ips
+    def resolve_hostname(self):
+        pass
+
+    def resolve_country(self):
+        pass
+
     def __str__(self):
         rstr = ""
-        rstr += "state: " + str(C_STATE.string_from_hex(int_from_string(self.state))) + " "
-        rstr += "from: " + str(self.local_ip) + ":" + str(self.local_port) + " "
-        rstr += "dest: " + str(self.dest_ip) + ":" + str(self.dest_port) + " "
+        rstr += "state: " + str(C_STATE.string_from_hex(int_from_string(self.state))) + " \t\t"
+        rstr += "from: " + str(self.local_ip) + ":" + str(self.local_port) + " \t\t"
+        rstr += "dest: " + str(self.dest_ip) + ":" + str(self.dest_port) + " \t\t"
         rstr += '\n'
         return rstr

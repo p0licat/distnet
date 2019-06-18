@@ -1,9 +1,15 @@
 
+import os
 import re
+import sys
 
+import pytest
 
-from distnet.hex_manip import hex_dict, int_from_string, ip_from_hex, port_from_hex
-from distnet.tcp_structs_exceptions import HexadecimalStringFormatError, \
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
+
+from hex_manip import hex_dict, int_from_string, ip_from_hex, port_from_hex
+from tcp_structs_exceptions import HexadecimalStringFormatError, \
     HexadecimalIpFormatError, HexadecimalPortFormatError
 
 def test_hex_dict():
@@ -21,11 +27,13 @@ def test_int_from_string():
         i_val = int_from_string(string)
         assert i_val == hex_strings[string]
 
-    try:
-        int_from_string("FG")
-        assert False
-    except HexadecimalStringFormatError:
-        assert True
+
+    with pytest.raises(Exception) as hsfe:
+        int_from_string('FG')
+
+    assert hsfe.typename == "HexadecimalStringFormatError"
+
+
 
 def test_ip_from_hex():
     m_ptr = re.compile(r'[0-9a-fA-F\.]')
@@ -40,11 +48,9 @@ def test_ip_from_hex():
 
 
     for item in bad_ip_list:
-        try:
+        with pytest.raises(Exception) as hife:
             ip_from_hex(item)
-            assert False
-        except HexadecimalIpFormatError:
-            assert True
+        assert hife.typename == "HexadecimalIpFormatError"
 
     valid_dict = {"AABBCCDD": "221.204.187.170", "F100A8C0": "192.168.0.241"}
     for v_ip in valid_dict.keys():
@@ -63,11 +69,10 @@ def test_port_from_hex():
             assert m_ptr.match(s_chr)
 
     for item in bad_port_list:
-        try:
+        with pytest.raises(Exception) as hpfe:
             port_from_hex(item)
-            assert False
-        except HexadecimalPortFormatError:
-            assert True
+        assert hpfe.typename == "HexadecimalPortFormatError"
+
 
     valid_dict = {"AAAA": 43690, "C040": 49216}
     for v_port in valid_dict.keys():

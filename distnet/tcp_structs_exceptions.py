@@ -1,7 +1,10 @@
-
+"""
+    Whole-project exceptions.
+"""
 import sys
 
 
+#TODO: comments and specs
 #TODO: restructure exceptions and inheritance
 
 class EntryTCP_Error(Exception):
@@ -11,7 +14,11 @@ class EntryTCP_Error(Exception):
 class EntryTCP_FormatError(EntryTCP_Error):
     def __init__(self, message, case):
         super(EntryTCP_FormatError, self).__init__(message)
-        sys.stderr.write(case)
+        self.message = message
+        self.case = case
+
+    def __str__(self):
+        sys.stderr.write(self.case)
 
 class EntryTCP_InitError(EntryTCP_Error):
     def __init__(self, message, case):

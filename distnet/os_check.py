@@ -9,7 +9,7 @@ import os.path as osp
 
 # TODO: refactor
 # idea 1: into check_path and check_files
-# idea 2: 
+# idea 2:
 def os_filesystem_check(directory, files_list, filetype_pattern):
     """
         Checks if file types match pattern.
@@ -20,6 +20,7 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
     """
     passed = True
 
+    # TODO: import struct?
     class CHECK_RESULTS:
         """
             ANSI escape sequences for colored output.
@@ -61,6 +62,9 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
         p_proc = subprocess.Popen(['file', '-E', cfile_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         subp_out, subp_err = p_proc.communicate()
 
+        subp_out = subp_out.decode('utf-8')
+        subp_err = subp_err.decode('utf-8')
+
         if p_proc.returncode != 0:
             passed = False
             r_status = CHECK_RESULTS.FAIL
@@ -69,7 +73,14 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
             continue
 
         pattern_filetype = re.compile(r'' + str(filetype_pattern))
-        regex_result = pattern_filetype.search(subp_out)
+
+        #DEBUG
+        # print(subp_out)
+        # print(type(subp_out))
+        #/dEBUG
+
+
+        regex_result = pattern_filetype.search(str(subp_out))
         if not regex_result:
             passed = False
             r_status = CHECK_RESULTS.FAIL

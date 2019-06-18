@@ -1,7 +1,13 @@
 
-from distnet.tcp_structs import C_STATE
-from distnet.tcp_file_entry import EntryTCP
-from distnet.hex_manip import int_from_string
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath('..'))
+sys.path.insert(0, os.path.abspath('../distnet'))
+
+from tcp_structs import C_STATE
+from tcp_file_entry import EntryTCP
+from hex_manip import int_from_string
 
 
 def test_c_state():
