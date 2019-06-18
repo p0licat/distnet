@@ -2,15 +2,11 @@
     File parser and syntax analysis class, for /proc/net/tcp.
 """
 
-#sys.path.insert(0, os.path.abspath('..'))
-
-import tempfile
-
-
-
 import re
 import os
 import sys
+
+import tempfile
 
 import pygal
 
@@ -21,17 +17,7 @@ from tcp_structs_exceptions import  EntryTCP_Error,\
                                     EntryTCP_FormatError, \
                                     FileTCP_InitError
 
-#
-# from distnet.tcp_file_entry import EntryTCP
-# from distnet.tcp_structs_exceptions import  EntryTCP_Error,\
-#                                     EntryTCP_FormatError, \
-#                                     FileTCP_InitError
 
-#
-# from .tcp_file_entry import EntryTCP
-# from .tcp_structs_exceptions import  EntryTCP_Error,\
-#                                     EntryTCP_FormatError, \
-#                                     FileTCP_InitError
 class FileTCP(object):
     """
         File data parser.
@@ -43,7 +29,6 @@ class FileTCP(object):
         self.entries = None
         self.removed_lines = 0
 
-        #v2 @@@
         self.entry_locations = dict()
         self.entry_hostnames = dict()
         self.tempfile_name = None
@@ -57,7 +42,8 @@ class FileTCP(object):
                 raise FileTCP_InitError('Path contains invalid characters.', s_chr) # TODO: exception style
 
     def __del__(self):
-        os.remove(self.tempfile_name)
+        if self.tempfile_name is not None:
+            os.remove(self.tempfile_name)
 
     def parse_entries(self):
         """
@@ -78,8 +64,6 @@ class FileTCP(object):
             done = True
             for index in range(len(self.entries)):
                 if not isinstance(self.entries[index], EntryTCP):
-                    #TODO: isinstance
-                    #if type(self.entries[index]) is not str or self.entries[index] == "":
                     if not isinstance(self.entries[index], str) or self.entries[index] == "":
                         # these lines do not pass to EntryTCP constructor
                         self.removed_lines += 1
@@ -127,28 +111,6 @@ class FileTCP(object):
         """
         return self.entries
 
-    def draw_map(self, cdict):
-        """
-            Generate heatmap from country dict with counter. Tempfile handler
-            is checked and used.
-        """
-        worldmap_chart = pygal.maps.world.World()
-        worldmap_chart.title = 'Heatmap'
-        worldmap_chart.add('Distribution', cdict)
-
-
-        if self.tempfile_name == None:
-            new_file, filename = tempfile.mkstemp()
-            self.tempfile_name = filename
-            print(filename)
-
-            self.tempfile_handler = new_file
-            os.close(new_file)
-            worldmap_chart.render_to_png(self.tempfile_name) # TODO: tempfile
-        else:
-            worldmap_chart.render_to_png(self.tempfile_name)
-
-
     def draw_map_v2(self, mode=None):
         """
             Generate map from stored entries property.
@@ -178,7 +140,6 @@ class FileTCP(object):
         if self.tempfile_name == None:
             new_file, filename = tempfile.mkstemp()
             self.tempfile_name = filename
-            print(filename)
 
             self.tempfile_handler = new_file
             os.close(new_file)
@@ -195,4 +156,4 @@ class FileTCP(object):
             if not resolve:
                 sys.stdout.write(str(item))
             else:
-                sys.stdout.write(str(item).rstrip() + " " + resolve_hostname(str(item.dest_ip)) + " "  + " EOF 2" + '\n')
+                sys.stdout.write(str(item).rstrip() + " \t" + resolve_hostname(str(item.dest_ip)) + " "  + " " + '\n')

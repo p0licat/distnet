@@ -1,5 +1,6 @@
 """
     Network related operations.
+    TODO: master class with static methods and os checks for connectivity
 """
 
 import socket
@@ -17,7 +18,7 @@ def resolve_hostname(dest_ip):
     except socket.gaierror as ge:
         return ""
 
-def resolve_location(hostname):
+def resolve_location(hostname, verbose=True):
     """
         Try to assign a location to a hostname.
     """
@@ -32,7 +33,8 @@ def resolve_location(hostname):
 
     for i in range(3):
         try:
-            print("Attempting to resolve: "  + hostname)
+            if verbose:
+                print("Attempting to resolve: "  + hostname)
 
             try:
                 whois_response = whois.whois(hostname)
@@ -55,8 +57,10 @@ def resolve_location(hostname):
                     cdata.append(ccode)
                     whois_countries[ccode] = 1 if ccode not in whois_countries else whois_countries[ccode] + 1
 
-            for i in cdata:
-                print(cdata)
+            # for i in cdata:
+            #     print(cdata)
+
+            break
 
         except Exception as ex:
             print(ex)
