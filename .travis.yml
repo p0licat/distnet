@@ -1,0 +1,15 @@
+language: python
+python:
+  - "3.4"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  # PyPy versions
+  - "pypy3.5"
+# command to install dependencies
+install:
+  - pip3 install pytest-cov
+  - pip3 install pytest
+  - pip3 install .
+# command to run tests
+script: python3 -m pytest tests/ --cov=distnet/ --cov-report term-missing
