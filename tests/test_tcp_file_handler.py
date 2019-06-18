@@ -157,8 +157,11 @@ def test_read_tcp_struct_string(FileTCP_testing):
 
 
 def test_read_tcp_struct_PathNotAccessible(FileTCP_testing_PathNotAccessible):
+    if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "str_true":
+        pytest.skip("TravisCI does not support.")
     tcpf = FileTCP_testing_PathNotAccessible
     tcpf.read_tcp_struct()
+
     assert tcpf.data == None
 
 
