@@ -1,8 +1,6 @@
 ## distnet
 
 ![screenshot](/Documentation/Images/appearance.png)
-Format: ![Alt Text](url)
-
 
 Visualizer for tcp connections. Ports 53 and 43 should accept connections for full functionality.
 
