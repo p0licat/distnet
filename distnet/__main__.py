@@ -12,6 +12,9 @@ import time
 import os
 import sys
 
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
+
 from network_controller import resolve_hostname
 from tcp_file_handler import FileTCP
 from os_check import os_filesystem_check
