@@ -5,6 +5,9 @@
 Visualizer for tcp connections. Ports 53 and 43 should accept connections for full functionality.
 
 [![Build Status](https://travis-ci.org/p0licat/distnet.svg?branch=master)](https://travis-ci.org/p0licat/distnet)
+[![codecov](https://codecov.io/gh/p0licat/distnet/branch/master/graph/badge.svg)](https://codecov.io/gh/p0licat/distnet)
+
+
 
 ## Requirements:
 
