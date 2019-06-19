@@ -1,5 +1,6 @@
 env:
   TRAVIS=str_true
+  CODECOV_TOKEN="80c28008-de4c-47e2-84b9-bbb36d089ec0"
 language: python
 python:
   - "3.4"
@@ -16,7 +17,9 @@ install:
   - pip3 install .
 # command to run tests
 script:
-    python3 -m pytest tests/ --cov=distnet/ --cov-report term-missing
+  - python3 -m pytest tests/ --cov=distnet/ --cov-report term-missing
 
 after_success:
-    codecov
+  - codecov
+  - codecov -e
+  - ls -la
