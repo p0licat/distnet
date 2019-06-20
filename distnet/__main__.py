@@ -126,7 +126,12 @@ def main():
 
 
                         if args.resolve == True:
-                            ns_formatted += " " + resolve_hostname(entry.dest_ip) + " "  + " "
+                            resolved_hostname = ""
+                            try:
+                                resolved_hostname = resolve_hostname(entry.dest_ip)
+                            except socket.gaierror as ge:
+                                resolved_hostname = "UNKNOWN_HOSTNAME"
+                            ns_formatted += " " + resolved_hostname + " "  + " "
 
                         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
             else:
@@ -137,7 +142,12 @@ def main():
                         ns_formatted = ""
 
                         if args.resolve == True:
-                            ns_formatted += " " + resolve_hostname(entry.dest_ip) + " "  + " "
+                            resolved_hostname = ""
+                            try:
+                                resolved_hostname = resolve_hostname(entry.dest_ip)
+                            except socket.gaierror as ge:
+                                resolved_hostname = "UNKNOWN_HOSTNAME"
+                            ns_formatted += " " + resolved_hostname + " "  + " "
 
                         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
 
