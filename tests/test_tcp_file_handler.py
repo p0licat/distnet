@@ -201,6 +201,7 @@ def test_print_entries_resolve():
         assert isinstance(i, EntryTCP)
 
 def test_get_entries(FileTCP_testing):
+    tcpf = FileTCP_testing
     tcpf.read_tcp_struct()
     tcpf.get_entries()
 
