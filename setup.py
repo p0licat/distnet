@@ -3,7 +3,7 @@ from pkg_resources import resource_filename
 # import pkg_resources
 
 
-__version__ = '0.1.52'
+__version__ = '0.1.541'
 
 versionFile = resource_filename(__name__, 'distnet/resources/VERSION')
 
@@ -24,8 +24,14 @@ setup(
     ],
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
-    url='http://pypi.python.org/pypi/none',
+    url='https://github.com/p0licat/distnet',
     license='LICENSE.txt',
-    description='Linux networking tools in python.',
-    long_description=open('README.txt').read(),
+    description='TCP connections visualizer.',
+    long_description=open('README.md').read(),
+    long_description_content_type='text/markdown',
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+        "Operating System :: POSIX :: Linux",
+    ],
 )

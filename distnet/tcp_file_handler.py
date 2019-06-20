@@ -18,6 +18,8 @@ from tcp_structs_exceptions import  EntryTCP_Error,\
                                     FileTCP_InitError
 
 
+import socket # TODO: bad exception handling with socket.gaierror
+
 class FileTCP(object):
     """
         File data parser.
@@ -118,7 +120,11 @@ class FileTCP(object):
         for entry in self.entries:
 
             if str(entry.dest_ip) not in self.entry_hostnames:
-                rhn = resolve_hostname(str(entry.dest_ip))
+                rhn = ""
+                try:
+                    rhn = resolve_hostname(str(entry.dest_ip))
+                except socket.gaierror as ge:
+                    rhn = "UNKNOWN_HOSTNAME"
                 if rhn != "":
                     self.entry_hostnames[str(entry.dest_ip)] = rhn
 
@@ -156,4 +162,9 @@ class FileTCP(object):
             if not resolve:
                 sys.stdout.write(str(item))
             else:
-                sys.stdout.write(str(item).rstrip() + " \t" + resolve_hostname(str(item.dest_ip)) + " "  + " " + '\n')
+                resolved_host = ""
+                try:
+                    resolved_host = resolve_hostname(str(item.dest_ip))
+                except socket.gaierror as ge:
+                    resolved_host = "UNKNOWN_HOSTNAME"
+                sys.stdout.write(str(item).rstrip() + " \t" + str(resolved_host) + " "  + " " + '\n')

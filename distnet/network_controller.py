@@ -16,7 +16,7 @@ def resolve_hostname(dest_ip):
     except socket.herror as he:
         return str("")
     except socket.gaierror as ge:
-        return ""
+        raise ge
 
 def resolve_location(hostname, verbose=True):
     """
@@ -32,43 +32,39 @@ def resolve_location(hostname, verbose=True):
     rloc = None
 
     for i in range(3):
+        if verbose:
+            print("Attempting to resolve: "  + hostname)
+
         try:
-            if verbose:
-                print("Attempting to resolve: "  + hostname)
-
-            try:
-                whois_response = whois.whois(hostname)
-            except Exception as ex:
-                print(ex)
-                continue
-
-            tdata = whois_response
-            try:
-                tdata = tdata.text
-            except AttributeError as ae:
-                continue
-
-
-            cdata = []
-            for i in tdata.split('\n'):
-                if 'Registrant Country:' in i:
-                    ccode = i.split(' ')[2].rstrip('\r').rstrip('\n').rstrip()
-                    ccode = ccode.lower()
-                    cdata.append(ccode)
-                    whois_countries[ccode] = 1 if ccode not in whois_countries else whois_countries[ccode] + 1
-
-            break
-
+            whois_response = whois.whois(hostname)
         except Exception as ex:
             print(ex)
+            continue
+
+        tdata = whois_response
+        try:
+            tdata = tdata.text
+        except AttributeError as ae:
+            continue
+
+
+        cdata = []
+        for i in tdata.split('\n'):
+            if 'Registrant Country:' in i:
+                ccode = i.split(' ')[2].rstrip('\r').rstrip('\n').rstrip()
+                ccode = ccode.lower()
+                cdata.append(ccode)
+                whois_countries[ccode] = 1 if ccode not in whois_countries else whois_countries[ccode] + 1
+
+        break
 
 
     tld_string = hostname.split('.')[-1].rstrip().lstrip('.')
 
     if len(whois_countries.keys()) != 0:
         rloc = list(whois_countries.keys())[0]
-    elif geoip_response != None:
-        rloc = geoip_response
+    #elif geoip_response != None:
+    #    rloc = geoip_response
     elif tld_string != None:
         return tld_string
 

@@ -12,6 +12,9 @@ import time
 import os
 import sys
 
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
+sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
+
 from network_controller import resolve_hostname
 from tcp_file_handler import FileTCP
 from os_check import os_filesystem_check
@@ -123,7 +126,12 @@ def main():
 
 
                         if args.resolve == True:
-                            ns_formatted += " " + resolve_hostname(entry.dest_ip) + " "  + " "
+                            resolved_hostname = ""
+                            try:
+                                resolved_hostname = resolve_hostname(entry.dest_ip)
+                            except socket.gaierror as ge:
+                                resolved_hostname = "UNKNOWN_HOSTNAME"
+                            ns_formatted += " " + resolved_hostname + " "  + " "
 
                         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
             else:
@@ -134,7 +142,12 @@ def main():
                         ns_formatted = ""
 
                         if args.resolve == True:
-                            ns_formatted += " " + resolve_hostname(entry.dest_ip) + " "  + " "
+                            resolved_hostname = ""
+                            try:
+                                resolved_hostname = resolve_hostname(entry.dest_ip)
+                            except socket.gaierror as ge:
+                                resolved_hostname = "UNKNOWN_HOSTNAME"
+                            ns_formatted += " " + resolved_hostname + " "  + " "
 
                         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
 
