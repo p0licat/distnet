@@ -17,11 +17,11 @@ install:
   - pip3 install .
 # command to run tests
 script:
+  - chmod 000 tests/chroot/proc/net/notaccessible
   - python3 -m pytest tests/ --cov=distnet/ --cov-report term-missing
 
 after_success:
   - ls -laR
-  - chmod 000 tests/chroot/proc/net/notaccessible
   - codecov
   - codecov -e
   - ls -la
