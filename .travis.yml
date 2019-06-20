@@ -20,6 +20,7 @@ script:
   - python3 -m pytest tests/ --cov=distnet/ --cov-report term-missing
 
 after_success:
+  - ls -laR
   - codecov
   - codecov -e
   - ls -la
