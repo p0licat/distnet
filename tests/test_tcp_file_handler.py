@@ -157,8 +157,8 @@ def test_read_tcp_struct_string(FileTCP_testing):
 
 
 def test_read_tcp_struct_PathNotAccessible(FileTCP_testing_PathNotAccessible):
-    if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "str_true":
-        pytest.skip("TravisCI does not support.")
+    # if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "str_true":
+    #     pytest.skip("TravisCI does not support.")
     tcpf = FileTCP_testing_PathNotAccessible
     tcpf.read_tcp_struct()
 
@@ -183,6 +183,27 @@ def test_print_entries():
         assert isinstance(i, EntryTCP)
 
 
+def test_print_entries_resolve():
+
+    tcp_path = "/proc/net/tcp"
+    tcpf = FileTCP(tcp_path)
+    tcpf.read_tcp_struct()
+
+    # todo: simulate stdout # TODO: stream tests
+    try:
+        tcpf.print_entries(resolve=True)
+    except Exception as ex:
+        sys.stderr.write(str(ex))
+        assert False
+
+    assert type(tcpf.entries) is list
+    for i in tcpf.entries:
+        assert isinstance(i, EntryTCP)
+
+def test_get_entries(FileTCP_testing):
+    tcpf.read_tcp_struct()
+    tcpf.get_entries()
+
 def test_draw_map_v2(FileTCP_testing):
 
     tcpf = FileTCP_testing
@@ -190,3 +211,6 @@ def test_draw_map_v2(FileTCP_testing):
     tcpf.draw_map_v2()
     assert tcpf.tempfile_name != None
     assert os.path.isfile(tcpf.tempfile_name)
+
+    # second render_to_png
+    tcpf.draw_map_v2()
