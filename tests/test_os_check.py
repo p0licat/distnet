@@ -32,7 +32,7 @@ def test_os_filesystem_check_Passing():
             '//tcp6',
             'udp',
             'udp6'
-        ], filetype_pattern=': empty$') == True
+        ], filetype_pattern=' regular empty ') == True
 
 def test_os_filesystem_check_not_existing():
     # is not dir

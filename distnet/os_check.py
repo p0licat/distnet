@@ -59,7 +59,7 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
         sys.stdout.write('Checking file: ' + cfile_path.ljust(24) + ' ... ')
 
         # file type matches pattern, see Documentation/Popen/file.c
-        p_proc = subprocess.Popen(['file', '-E', cfile_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        p_proc = subprocess.Popen(['stat', cfile_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         subp_out, subp_err = p_proc.communicate()
 
         subp_out = subp_out.decode('utf-8')
