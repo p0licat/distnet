@@ -27,7 +27,7 @@ re_hexadecimal_str_mchr_line = re.compile(r'[0-9abcdefABCDEF\.]{7,17}') # TODO: 
 re_hexa_addr_mchr_line = re.compile(r'[0-9abcdefABCDEF]{1,5}') # TODO: use in hexadecimal data getter
 
 
-tcp_path = '/proc/net/tcp'
+tcp_path = 'tests/chroot/proc/net/tcp'
 not_accessible_path = 'tests/chroot/proc/net/notaccessible'
 
 if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "str_true":
