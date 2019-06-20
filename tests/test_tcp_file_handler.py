@@ -157,8 +157,11 @@ def test_read_tcp_struct_string(FileTCP_testing):
 
 
 def test_read_tcp_struct_PathNotAccessible(FileTCP_testing_PathNotAccessible):
-    # if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "str_true":
-    #     pytest.skip("TravisCI does not support.")
+    if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "str_true":
+        pass
+    else:
+        pytest.skip("TravisCI does not support.")
+
     tcpf = FileTCP_testing_PathNotAccessible
     tcpf.read_tcp_struct()
 
@@ -205,6 +208,7 @@ def test_get_entries(FileTCP_testing):
     tcpf.read_tcp_struct()
     tcpf.get_entries()
 
+
 def test_draw_map_v2(FileTCP_testing):
 
     tcpf = FileTCP_testing
@@ -215,3 +219,39 @@ def test_draw_map_v2(FileTCP_testing):
 
     # second render_to_png
     tcpf.draw_map_v2()
+
+
+def test_draw_map_v2_heatmap(FileTCP_testing):
+
+    tcpf = FileTCP_testing
+    tcpf.read_tcp_struct()
+    tcpf.draw_map_v2(mode='heatmap')
+    assert tcpf.tempfile_name != None
+    assert os.path.isfile(tcpf.tempfile_name)
+
+    # second render_to_png
+    tcpf.draw_map_v2(mode='heatmap')
+
+
+def test_draw_map_v3(FileTCP_testing):
+
+    tcpf = FileTCP_testing
+    tcpf.read_tcp_struct()
+    tcpf.draw_map_v3()
+    assert tcpf.tempfile_name != None
+    assert os.path.isfile(tcpf.tempfile_name)
+
+    # second render_to_png
+    tcpf.draw_map_v3()
+
+
+def test_draw_map_v3_heatmap(FileTCP_testing):
+
+    tcpf = FileTCP_testing
+    tcpf.read_tcp_struct()
+    tcpf.draw_map_v3(mode='heatmap')
+    assert tcpf.tempfile_name != None
+    assert os.path.isfile(tcpf.tempfile_name)
+
+    # second render_to_png
+    tcpf.draw_map_v3(mode='heatmap')

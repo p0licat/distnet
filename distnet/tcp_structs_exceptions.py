@@ -53,3 +53,9 @@ class FileTCP_InitError(FileTCP_Error):
         super(FileTCP_InitError, self).__init__(message)
         self.string = case
         sys.stderr.write(self.string)
+
+class HostnameNotResolvedError(FileTCP_Error):
+    def __init__(self, message, case):
+        super(FileTCP_Error, self).__init__(message)
+        self.string = case
+        sys.stderr.write(self.string)

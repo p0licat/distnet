@@ -3,15 +3,10 @@
     hexadecimal, and formats found in /proc/net/ files in Linux.
 """
 
-#TODO: exceptions
-# from distnet.tcp_structs_exceptions import HexadecimalIpFormatError, \
-#     HexadecimalPortFormatError, HexadecimalStringFormatError
 
 from tcp_structs_exceptions import HexadecimalIpFormatError, \
     HexadecimalPortFormatError, HexadecimalStringFormatError
 
-# from .tcp_structs_exceptions import HexadecimalIpFormatError, \
-#     HexadecimalPortFormatError, HexadecimalStringFormatError
 
 def hex_dict():
     """
@@ -27,12 +22,13 @@ def hex_dict():
 
     return h_dict
 
+
 def int_from_string(hex_string):
     """
         Converts hex string to integer.
     """
     hd = hex_dict()
-    # print(hd)
+
     value = 0
     i = 0
     for char in hex_string[::-1]:
@@ -78,19 +74,8 @@ def port_from_hex(string):
     """
         Converts hex port string to decimal port (0, 65535)
     """
-    #h_dict = hex_dict()
 
     if len(string) != 4:
         raise HexadecimalPortFormatError('Not a valid hexadecimal port string.', string)
 
-    #TODO: verify for removal
-    #rval = 0
-    # TODO: test before next todo
-    # TODO: refactor into *_from_ -> from() : 1. check 2. call int_from
-    # s = string[::-1]
-    #
-    # i = 0
-    # for h_char in s:
-    #     rval += pow(16, i) * h_dict[h_char]
-    #     i += 1
     return str(int_from_string(string))

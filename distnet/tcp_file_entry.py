@@ -1,17 +1,18 @@
 """
     Manipulate lines in /proc/net/tcp file.
 """
-# from distnet.hex_manip import ip_from_hex, port_from_hex, int_from_string
-# from distnet.tcp_structs_exceptions import EntryTCP_FormatError, EntryTCP_InitError
-# from distnet.tcp_structs import C_STATE
 
-# from .hex_manip import ip_from_hex, port_from_hex, int_from_string
-# from .tcp_structs_exceptions import EntryTCP_FormatError, EntryTCP_InitError
-# from .tcp_structs import C_STATE
-#
+
+import socket
+import network_controller
+
+
 from hex_manip import ip_from_hex, port_from_hex, int_from_string
-from tcp_structs_exceptions import EntryTCP_FormatError, EntryTCP_InitError
+from tcp_structs_exceptions import  EntryTCP_FormatError, \
+                                    EntryTCP_InitError, \
+                                    HostnameNotResolvedError
 from tcp_structs import C_STATE
+
 
 class EntryTCP(object):
     """
@@ -26,12 +27,13 @@ class EntryTCP(object):
         #   * entry.dest_ip     ->  dest IP string : re.compile(r'[\.0-9]')
         #   * entry.dest_port   ->  dest port string : re.compile(r'[0-9]')
         #   * entry.state       ->  0x1 -> 0xB matching C_STATE
+        #   * entry.resolved_hostname -> hostname from ns query
+        #   * entry.resolved_location -> decision tree result (geoip, whois)
+
 
         if not type(entry_line) is str:
             raise EntryTCP_InitError('Entry line must be string. {0}'.format(entry_line), entry_line)
 
-        #TODO: removal
-        #if entry_line == "" or len(entry_line) < 1:
         if entry_line == "":
             raise EntryTCP_FormatError('Entry line must not be null string.', entry_line)
 
@@ -47,6 +49,8 @@ class EntryTCP(object):
         self.dest_port = None
 
         self.state = None
+        self.resolved_hostname = None
+        self.resolved_location = None
 
         issplit = self.string.split(' ')
         ssplit = []
@@ -97,12 +101,30 @@ class EntryTCP(object):
 
         self.state = conn_state
 
-    #TODO: ips
+        #TODO: exceptoins some time
+        self.resolved_hostname = self.resolve_hostname()
+
+        try:
+            self.resolved_location = self.resolve_country()
+        except HostnameNotResolvedError:
+            print("Not resolved hostname, so can't check where")
+
+
     def resolve_hostname(self):
-        pass
+        resolved_str = None
+        try:
+            resolved_str = network_controller.resolve_hostname(self.dest_ip)
+        except socket.gaierror as ge:
+            resolved_str = None
+        self.resolved_hostname = resolved_str
 
     def resolve_country(self):
-        pass
+        if self.resolved_hostname != None:
+            self.resolved_location = network_controller.resolve_location(self.resolved_hostname)
+        else:
+            self.resolve_hostname()
+            if self.resolved_hostname == None:
+                raise HostnameNotResolvedError('Hostname was not resolved by dns... please retry', str(self.dest_ip))
 
     def __str__(self):
         rstr = ""
