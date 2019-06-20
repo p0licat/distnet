@@ -118,17 +118,18 @@ def main():
                 en = ftcp.get_entries()
 
                 for entry in en:
+                    # todo: change if for max_tries
                     if entry.dest_ip not in history_ips.keys():
                         history_ips[entry.dest_ip] = True
                         ns_formatted = ""
 
-                        # continuous mode
-
-
                         if args.resolve == True:
                             resolved_hostname = ""
                             try:
-                                resolved_hostname = resolve_hostname(entry.dest_ip)
+                                if entry.resolved_hostname == None:
+                                    entry.resolve_country()
+                                resolved_hostname = entry.resolved_hostname
+                                #resolved_hostname = resolve_hostname(entry.dest_ip)
                             except socket.gaierror as ge:
                                 resolved_hostname = "UNKNOWN_HOSTNAME"
                             ns_formatted += " " + resolved_hostname + " "  + " "
@@ -152,7 +153,7 @@ def main():
                         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
 
             if args.visual == True:
-                ftcp.draw_map_v2()
+                ftcp.draw_map_v3(continuous=args.continuous)
 
                 world(0, 0, gameDisplay, ftcp.tempfile_name)
                 pygame.display.update()
@@ -174,8 +175,8 @@ def main():
         ftcp.print_entries(resolve=args.resolve)
 
         if args.visual == True:
-            ftcp.draw_map_v2(mode='heatmap')
-            print("Wrote image to: " + ftcp.tempfile_name)
+            ftcp.draw_map_v2(mode='heatmap', continuous = args.continuous)
+            print("Wrote image to: " + ftcp.last_write_name)
 
 
     #redir_std.close()

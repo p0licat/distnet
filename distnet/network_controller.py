@@ -5,12 +5,18 @@
 
 import socket
 import whois
+import time
 
 
 def resolve_hostname(dest_ip):
     """
         Try to query hostname.
     """
+
+    #limit_flood = 0.116
+    #TODO: pass from __main__
+    #time.sleep(limit_flood)
+
     try:
         return str(socket.gethostbyaddr(dest_ip)[0])
     except socket.herror as he:
@@ -33,7 +39,7 @@ def resolve_location(hostname, verbose=True):
 
     for i in range(3):
         if verbose:
-            print("Attempting to resolve: "  + hostname)
+            print("Attempting to resolve location: "  + hostname)
 
         try:
             whois_response = whois.whois(hostname)

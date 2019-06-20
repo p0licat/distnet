@@ -52,6 +52,8 @@ class EntryTCP(object):
         self.resolved_hostname = None
         self.resolved_location = None
 
+        self.max_resolve_tries = 2
+
         issplit = self.string.split(' ')
         ssplit = []
 
@@ -112,11 +114,14 @@ class EntryTCP(object):
 
     def resolve_hostname(self):
         resolved_str = None
+        if self.max_resolve_tries < 0:
+            return
         try:
             resolved_str = network_controller.resolve_hostname(self.dest_ip)
         except socket.gaierror as ge:
             resolved_str = None
         self.resolved_hostname = resolved_str
+        self.max_resolve_tries -= 1
 
     def resolve_country(self):
         if self.resolved_hostname != None:

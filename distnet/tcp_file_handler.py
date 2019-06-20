@@ -35,6 +35,7 @@ class FileTCP(object):
         self.entry_hostnames = dict()
         self.tempfile_name = None
         self.tempfile_handler = None
+        self.last_write_filename = None
 
         if not isinstance(path, str) or path == "":
             raise FileTCP_InitError("Not a valid path string: ", "{0}".format(path))
@@ -114,12 +115,13 @@ class FileTCP(object):
         return self.entries
 
 
-    def draw_map_v3(self, mode=None):
+    def draw_map_v3(self, mode=None, continuous = None):
         for entry in self.entries:
             if entry.resolved_location != None:
                 self.entry_locations[entry.dest_ip] = entry.resolved_location
             else:
-                entry.resolve_country()
+                if entry.resolved_location == None:
+                    entry.resolve_country()
                 if entry.resolved_location != None:
                     self.entry_locations[entry.dest_ip] = entry.resolved_location
 
@@ -138,15 +140,22 @@ class FileTCP(object):
         if self.tempfile_name == None:
             new_file, filename = tempfile.mkstemp()
             self.tempfile_name = filename
+            self.last_write_name = self.tempfile_name
 
+            # todo: remove handler
             self.tempfile_handler = new_file
             os.close(new_file)
             worldmap_chart.render_to_png(self.tempfile_name)
+            if not continuous:
+                self.tempfile_name = None
         else:
             worldmap_chart.render_to_png(self.tempfile_name)
+            self.last_write_name = self.tempfile_name
+            if not continuous:
+                self.tempfile_name = None
 
 
-    def draw_map_v2(self, mode=None):
+    def draw_map_v2(self, mode=None, continuous=None):
         """
             Generate map from stored entries property.
         """
@@ -179,12 +188,18 @@ class FileTCP(object):
         if self.tempfile_name == None:
             new_file, filename = tempfile.mkstemp()
             self.tempfile_name = filename
+            self.last_write_name = self.tempfile_name
 
             self.tempfile_handler = new_file
             os.close(new_file)
             worldmap_chart.render_to_png(self.tempfile_name)
+            if not continuous:
+                self.tempfile_name = None
         else:
             worldmap_chart.render_to_png(self.tempfile_name)
+            self.last_write_name = self.tempfile_name
+            if not continuous:
+                self.tempfile_name = None
 
 
     def print_entries(self, resolve=False):
