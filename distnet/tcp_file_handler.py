@@ -142,7 +142,8 @@ class FileTCP(object):
             self.running = self.game_controller.world()
 
         for entry in self.entries:
-            self.running = self.game_controller.world()
+            if visual == True:
+                self.running = self.game_controller.world()
             if not self.running:
                 break
             if entry.resolved_location != None:

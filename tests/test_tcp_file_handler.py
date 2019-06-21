@@ -209,28 +209,28 @@ def test_get_entries(FileTCP_testing):
     tcpf.get_entries()
 
 
-def test_draw_map_v2(FileTCP_testing):
-
-    tcpf = FileTCP_testing
-    tcpf.read_tcp_struct()
-    tcpf.draw_map_v2()
-    #assert tcpf.tempfile_name != None
-    #assert os.path.isfile(tcpf.tempfile_name)
-
-    # second render_to_png
-    tcpf.draw_map_v2()
-
-
-def test_draw_map_v2_heatmap(FileTCP_testing):
-
-    tcpf = FileTCP_testing
-    tcpf.read_tcp_struct()
-    tcpf.draw_map_v2(mode='heatmap')
-    #assert tcpf.tempfile_name != None
-    #assert os.path.isfile(tcpf.tempfile_name)
-
-    # second render_to_png
-    tcpf.draw_map_v2(mode='heatmap')
+# def test_draw_map_v2(FileTCP_testing):
+#
+#     tcpf = FileTCP_testing
+#     tcpf.read_tcp_struct()
+#     tcpf.draw_map_v2()
+#     #assert tcpf.tempfile_name != None
+#     #assert os.path.isfile(tcpf.tempfile_name)
+#
+#     # second render_to_png
+#     tcpf.draw_map_v2()
+#
+#
+# def test_draw_map_v2_heatmap(FileTCP_testing):
+#
+#     tcpf = FileTCP_testing
+#     tcpf.read_tcp_struct()
+#     tcpf.draw_map_v2(mode='heatmap')
+#     #assert tcpf.tempfile_name != None
+#     #assert os.path.isfile(tcpf.tempfile_name)
+#
+#     # second render_to_png
+#     tcpf.draw_map_v2(mode='heatmap')
 
 
 def test_draw_map_v3(FileTCP_testing):
