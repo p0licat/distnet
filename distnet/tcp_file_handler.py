@@ -11,7 +11,7 @@ import tempfile
 import pygal
 
 from network_controller import resolve_hostname, resolve_location
-
+from game_controller import GameController
 from tcp_file_entry import EntryTCP
 from tcp_structs_exceptions import  EntryTCP_Error, \
                                     EntryTCP_FormatError, \
@@ -36,6 +36,9 @@ class FileTCP(object):
         self.tempfile_name = None
         self.tempfile_handler = None
         self.last_write_filename = None
+
+        self.game_controller = None
+        self.running = True
 
         if not isinstance(path, str) or path == "":
             raise FileTCP_InitError("Not a valid path string: ", "{0}".format(path))
@@ -115,8 +118,33 @@ class FileTCP(object):
         return self.entries
 
 
-    def draw_map_v3(self, mode=None, continuous = None):
+    def draw_map_v3(self, mode = None, continuous = None, visual = None):
+
+        worldmap_chart = pygal.maps.world.World()
+        worldmap_chart.title = 'Some countries'
+
+
+        if self.tempfile_name == None:
+            new_file, filename = tempfile.mkstemp(suffix='.png')
+            self.tempfile_name = str(filename)
+            self.last_write_name = self.tempfile_name
+
+            os.close(new_file)
+            worldmap_chart.render_to_png(self.tempfile_name)
+            if not continuous:
+                self.tempfile_name = None
+
+
+        if visual == True:
+            if self.game_controller == None:
+                self.game_controller = GameController(self.tempfile_name)
+
+            self.running = self.game_controller.world()
+
         for entry in self.entries:
+            self.running = self.game_controller.world()
+            if not self.running:
+                break
             if entry.resolved_location != None:
                 self.entry_locations[entry.dest_ip] = entry.resolved_location
             else:
@@ -126,9 +154,6 @@ class FileTCP(object):
                     self.entry_locations[entry.dest_ip] = entry.resolved_location
 
 
-        worldmap_chart = pygal.maps.world.World()
-        worldmap_chart.title = 'Some countries'
-
         if mode == None or mode == 'flag':
             for item in self.entry_locations.keys():
                 val = self.entry_locations[item]
@@ -137,70 +162,58 @@ class FileTCP(object):
             worldmap_chart.add('Heatmap', self.entry_locations.values())
 
 
-        if self.tempfile_name == None:
-            new_file, filename = tempfile.mkstemp()
-            self.tempfile_name = filename
-            self.last_write_name = self.tempfile_name
+        worldmap_chart.render_to_png(self.tempfile_name)
+        self.last_write_name = self.tempfile_name
+        if not continuous:
+            self.tempfile_name = None
 
-            # todo: remove handler
-            self.tempfile_handler = new_file
-            os.close(new_file)
-            worldmap_chart.render_to_png(self.tempfile_name)
-            if not continuous:
-                self.tempfile_name = None
-        else:
-            worldmap_chart.render_to_png(self.tempfile_name)
-            self.last_write_name = self.tempfile_name
-            if not continuous:
-                self.tempfile_name = None
-
-
-    def draw_map_v2(self, mode=None, continuous=None):
-        """
-            Generate map from stored entries property.
-        """
-        for entry in self.entries:
-
-            if str(entry.dest_ip) not in self.entry_hostnames:
-                rhn = ""
-                try:
-                    rhn = resolve_hostname(str(entry.dest_ip))
-                except socket.gaierror as ge:
-                    rhn = "UNKNOWN_HOSTNAME"
-                if rhn != "":
-                    self.entry_hostnames[str(entry.dest_ip)] = rhn
-
-            if str(str(entry.dest_ip)) not in self.entry_locations:
-                if str(str(entry.dest_ip)) in self.entry_hostnames:
-                    self.entry_locations[str(entry.dest_ip)] = resolve_location(self.entry_hostnames[str(entry.dest_ip)])
-
-        worldmap_chart = pygal.maps.world.World()
-        worldmap_chart.title = 'Some countries'
-
-        if mode == None or mode == 'flag':
-            for item in self.entry_locations.keys():
-                val = self.entry_locations[item]
-                worldmap_chart.add(item, val)
-        elif mode == 'heatmap':
-            worldmap_chart.add('Heatmap', self.entry_locations.values())
-
-
-        if self.tempfile_name == None:
-            new_file, filename = tempfile.mkstemp()
-            self.tempfile_name = filename
-            self.last_write_name = self.tempfile_name
-
-            self.tempfile_handler = new_file
-            os.close(new_file)
-            worldmap_chart.render_to_png(self.tempfile_name)
-            if not continuous:
-                self.tempfile_name = None
-        else:
-            worldmap_chart.render_to_png(self.tempfile_name)
-            self.last_write_name = self.tempfile_name
-            if not continuous:
-                self.tempfile_name = None
-
+    # TODO: testing for removal
+    # def draw_map_v2(self, mode=None, continuous=None):
+    #     """
+    #         Generate map from stored entries property.
+    #     """
+    #     for entry in self.entries:
+    #
+    #         if str(entry.dest_ip) not in self.entry_hostnames:
+    #             rhn = ""
+    #             try:
+    #                 rhn = resolve_hostname(str(entry.dest_ip))
+    #             except socket.gaierror as ge:
+    #                 rhn = "UNKNOWN_HOSTNAME"
+    #             if rhn != "":
+    #                 self.entry_hostnames[str(entry.dest_ip)] = rhn
+    #
+    #         if str(str(entry.dest_ip)) not in self.entry_locations:
+    #             if str(str(entry.dest_ip)) in self.entry_hostnames:
+    #                 self.entry_locations[str(entry.dest_ip)] = resolve_location(self.entry_hostnames[str(entry.dest_ip)])
+    #
+    #     worldmap_chart = pygal.maps.world.World()
+    #     worldmap_chart.title = 'Some countries'
+    #
+    #     if mode == None or mode == 'flag':
+    #         for item in self.entry_locations.keys():
+    #             val = self.entry_locations[item]
+    #             worldmap_chart.add(item, val)
+    #     elif mode == 'heatmap':
+    #         worldmap_chart.add('Heatmap', self.entry_locations.values())
+    #
+    #
+    #     if self.tempfile_name == None:
+    #         new_file, filename = tempfile.mkstemp()
+    #         self.tempfile_name = filename
+    #         self.last_write_name = self.tempfile_name
+    #
+    #         self.tempfile_handler = new_file
+    #         os.close(new_file)
+    #         worldmap_chart.render_to_png(self.tempfile_name)
+    #         if not continuous:
+    #             self.tempfile_name = None
+    #     else:
+    #         worldmap_chart.render_to_png(self.tempfile_name)
+    #         self.last_write_name = self.tempfile_name
+    #         if not continuous:
+    #             self.tempfile_name = None
+    #
 
     def print_entries(self, resolve=False):
         """
