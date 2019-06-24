@@ -125,7 +125,7 @@ class EntryTCP(object):
 
     def resolve_country(self):
         if self.resolved_hostname != None:
-            self.resolved_location = network_controller.resolve_location(self.resolved_hostname)
+            self.resolved_location = network_controller.resolve_location(self.resolved_hostname, ip=self.dest_ip)
         else:
             self.resolve_hostname()
             if self.resolved_hostname == None:

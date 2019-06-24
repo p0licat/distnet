@@ -7,6 +7,8 @@ import socket
 import whois
 import time
 
+#import pygeoip
+import mm_geoip_interpreter
 
 def resolve_hostname(dest_ip):
     """
@@ -24,7 +26,7 @@ def resolve_hostname(dest_ip):
     except socket.gaierror as ge:
         raise ge
 
-def resolve_location(hostname, verbose=True):
+def resolve_location(hostname, ip=None, verbose=True):
     """
         Try to assign a location to a hostname.
     """
@@ -32,11 +34,19 @@ def resolve_location(hostname, verbose=True):
     geoip_response = None # TODO: geoip
     tld_string = None
 
-
     whois_countries = dict()
-
     rloc = None
 
+    # geoip determination
+    if (ip):
+        print("Trying to lookup geoip with ")
+        print(ip.encode())
+        print(type(ip))
+        geoip_response = geolite2.lookup(ip.encode())
+        if geoip_response is not None:
+            geoip_response = geoip_response.country.lower()
+
+    # DNS query
     for i in range(3):
         if verbose:
             print("Attempting to resolve location: "  + hostname)
@@ -64,14 +74,16 @@ def resolve_location(hostname, verbose=True):
 
         break
 
-
+    # fallback url determination
     tld_string = hostname.split('.')[-1].rstrip().lstrip('.')
 
+    # priorities are whois > geoip > url
     if len(whois_countries.keys()) != 0:
         rloc = list(whois_countries.keys())[0]
-    #elif geoip_response != None:
-    #    rloc = geoip_response
+    elif geoip_response != None:
+       rloc = geoip_response
     elif tld_string != None:
         return tld_string
 
+    print(rloc)
     return rloc

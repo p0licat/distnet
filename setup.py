@@ -3,7 +3,7 @@ from pkg_resources import resource_filename
 # import pkg_resources
 
 
-__version__ = '0.1.602'
+__version__ = '0.1.610'
 
 versionFile = resource_filename(__name__, 'distnet/resources/VERSION')
 
@@ -21,6 +21,7 @@ setup(
         'pygame',
         'python-whois', #TODO: check for whois package, conflicting?
         'cairosvg',
+        'pygeoip'
     ],
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
