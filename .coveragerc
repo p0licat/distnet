@@ -1,3 +1,4 @@
 [run]
-omit = distnet/__main__.py
-omit = distnet/game_controller.py
+omit =
+    distnet/__main__.py
+    distnet/game_controller.py
