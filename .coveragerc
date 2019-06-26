@@ -1,2 +1,3 @@
 [run]
 omit = distnet/__main__.py
+omit = distnet/game_controller.py
