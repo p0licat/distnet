@@ -8,7 +8,7 @@ import whois
 import time
 
 #import pygeoip
-import mm_geoip_interpreter
+from mm_geoip_interpreter import GeoIP_Controller
 
 def resolve_hostname(dest_ip):
     """
@@ -42,9 +42,11 @@ def resolve_location(hostname, ip=None, verbose=True):
         print("Trying to lookup geoip with ")
         print(ip.encode())
         print(type(ip))
-        geoip_response = geolite2.lookup(ip.encode())
+        #geoip_response = geolite2.lookup(ip.encode())
+        gc = GeoIP_Controller()
+        geoip_response = gc.search_CIDR_location(ip)
         if geoip_response is not None:
-            geoip_response = geoip_response.country.lower()
+            geoip_response = geoip_response.lower()
 
     # DNS query
     for i in range(3):
