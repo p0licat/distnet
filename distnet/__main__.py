@@ -108,7 +108,7 @@ def main():
                         if args.resolve == True:
                             resolved_hostname = ""
                             try:
-                                if entry.resolved_hostname == None and entry.resolved_country == None:
+                                if entry.resolved_hostname == None and entry.resolved_location == None:
                                     entry.resolve_country()
                                 resolved_hostname = entry.resolved_hostname
                                 #resolved_hostname = resolve_hostname(entry.dest_ip)
@@ -117,7 +117,7 @@ def main():
                             ns_formatted += " " + resolved_hostname + " "  + " "
 
                         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
-                        #time.sleep(1)
+                        time.sleep(1)
             else:
                 en = ftcp.get_entries()
                 for entry in en:
