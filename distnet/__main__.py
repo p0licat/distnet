@@ -97,25 +97,25 @@ def main():
             if args.output == None:
 
                 en = ftcp.get_entries()
+                if args.verbose == True:
+                    for entry in en:
+                        # todo: change if for max_tries
+                        if entry.dest_ip not in history_ips.keys():
+                            history_ips[entry.dest_ip] = True
+                            ns_formatted = ""
 
-                for entry in en:
-                    # todo: change if for max_tries
-                    if entry.dest_ip not in history_ips.keys():
-                        history_ips[entry.dest_ip] = True
-                        ns_formatted = ""
+                            if args.resolve == True:
+                                resolved_hostname = ""
+                                try:
+                                    if entry.resolved_hostname == None and entry.resolved_country == None:
+                                        entry.resolve_country()
+                                    resolved_hostname = entry.resolved_hostname
+                                    #resolved_hostname = resolve_hostname(entry.dest_ip)
+                                except socket.gaierror as ge:
+                                    resolved_hostname = "UNKNOWN_HOSTNAME"
+                                ns_formatted += " " + resolved_hostname + " "  + " "
 
-                        if args.resolve == True:
-                            resolved_hostname = ""
-                            try:
-                                if entry.resolved_hostname == None and entry.resolved_country == None:
-                                    entry.resolve_country()
-                                resolved_hostname = entry.resolved_hostname
-                                #resolved_hostname = resolve_hostname(entry.dest_ip)
-                            except socket.gaierror as ge:
-                                resolved_hostname = "UNKNOWN_HOSTNAME"
-                            ns_formatted += " " + resolved_hostname + " "  + " "
-
-                        sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
+                            sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
             else:
                 en = ftcp.get_entries()
                 for entry in en:

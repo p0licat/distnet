@@ -52,7 +52,7 @@ class EntryTCP(object):
         self.resolved_hostname = None
         self.resolved_location = None
 
-        self.max_resolve_tries = 2
+        self.max_resolve_tries = 3
 
         issplit = self.string.split(' ')
         ssplit = []
@@ -104,32 +104,47 @@ class EntryTCP(object):
         self.state = conn_state
 
         #TODO: exceptoins some time
-        self.resolved_hostname = self.resolve_hostname()
-
-        try:
-            self.resolved_location = self.resolve_country()
-        except HostnameNotResolvedError:
-            print("Not resolved hostname, so can't check where")
+        # self.resolved_hostname = self.resolve_hostname()
+        #
+        # try:
+        #     self.resolved_location = self.resolve_country()
+        # except HostnameNotResolvedError:
+        #     print("Not resolved hostname, so can't check where")
 
 
     def resolve_hostname(self):
         resolved_str = None
+
         if self.max_resolve_tries < 0:
             return
+        else:
+            self.max_resolve_tries -= 1
+
         try:
             resolved_str = network_controller.resolve_hostname(self.dest_ip)
         except socket.gaierror as ge:
             resolved_str = None
         self.resolved_hostname = resolved_str
-        self.max_resolve_tries -= 1
+
+
+        #return True
 
     def resolve_country(self):
+        if self.max_resolve_tries < 0:
+            return
+        else:
+            self.max_resolve_tries -= 1
+
         if self.resolved_hostname != None:
             self.resolved_location = network_controller.resolve_location(self.resolved_hostname, ip=self.dest_ip)
         else:
             self.resolve_hostname()
-            if self.resolved_hostname == None:
+            if self.resolved_hostname != None:
+                self.resolved_location = network_controller.resolve_location(self.resolved_hostname, ip=self.dest_ip)
+            elif self.resolved_hostname == None:
+                self.resolved_location = network_controller.resolve_location("", ip=self.dest_ip)
                 raise HostnameNotResolvedError('Hostname was not resolved by dns... please retry', str(self.dest_ip))
+
 
     def __str__(self):
         rstr = ""

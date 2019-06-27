@@ -49,32 +49,33 @@ def resolve_location(hostname, ip=None, verbose=True):
             geoip_response = geoip_response.lower()
 
     # DNS query
-    for i in range(3):
-        if verbose:
-            print("Attempting to resolve location: "  + hostname)
+    if hostname != "":
+        for i in range(3):
+            if verbose:
+                print("Attempting to resolve location: "  + hostname)
 
-        try:
-            whois_response = whois.whois(hostname)
-        except Exception as ex:
-            print(ex)
-            continue
+            try:
+                whois_response = whois.whois(hostname)
+            except Exception as ex:
+                #print(ex)
+                continue
 
-        tdata = whois_response
-        try:
-            tdata = tdata.text
-        except AttributeError as ae:
-            continue
+            tdata = whois_response
+            try:
+                tdata = tdata.text
+            except AttributeError as ae:
+                continue
 
 
-        cdata = []
-        for i in tdata.split('\n'):
-            if 'Registrant Country:' in i:
-                ccode = i.split(' ')[2].rstrip('\r').rstrip('\n').rstrip()
-                ccode = ccode.lower()
-                cdata.append(ccode)
-                whois_countries[ccode] = 1 if ccode not in whois_countries else whois_countries[ccode] + 1
+            cdata = []
+            for i in tdata.split('\n'):
+                if 'Registrant Country:' in i:
+                    ccode = i.split(' ')[2].rstrip('\r').rstrip('\n').rstrip()
+                    ccode = ccode.lower()
+                    cdata.append(ccode)
+                    whois_countries[ccode] = 1 if ccode not in whois_countries else whois_countries[ccode] + 1
 
-        break
+            break
 
     # fallback url determination
     tld_string = hostname.split('.')[-1].rstrip().lstrip('.')

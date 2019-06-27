@@ -94,7 +94,7 @@ class GeoIP_Controller():
         # print(self.__blocks_dict[firstbits])
         # assert False
         for line in self.__blocks_dict[firstbits]:
-            print(line)
+            #print(line)
             lsplit = line.split(',')
             cidr_ip_string = lsplit[0]
             country_geoname_id = lsplit[2]
