@@ -64,13 +64,13 @@ class FileTCP(object):
         if self.data is None:
             raise FileTCP_InitError("Fatal error, no data to parse.", "Tried with path: {0}".format(self.path))
 
-        print("COPY DATA")
-        if self.entries != None:
-            for item in self.entries:
-                print("OE")
-                print(item.dest_ip)
-                print(item.max_resolve_tries)
-            print("END")
+        # print("COPY DATA")
+        # if self.entries != None:
+        #     for item in self.entries:
+        #         print("OE")
+        #         print(item.dest_ip)
+        #         print(item.max_resolve_tries)
+        #     print("END")
         self.old_entries = self.entries
         self.entries = self.data.split("\n")
 
@@ -112,7 +112,7 @@ class FileTCP(object):
             if done:
                 break
 
-        print("transit")
+        # print("transit")
         if self.old_entries != None:
             for item in self.old_entries:
                 found = False
@@ -121,12 +121,12 @@ class FileTCP(object):
                         found = True
 
                 if not found:
-                    print("appending item")
-                    print(item.dest_ip)
-                    print(item.max_resolve_tries)
+                    # print("appending item")
+                    # print(item.dest_ip)
+                    # print(item.max_resolve_tries)
                     self.entries.append(item)
-                    print(self.entries)
-                    print("end append")
+                    # print(self.entries)
+                    # print("end append")
                 else:
                     print("EXCEPT")
 
@@ -172,8 +172,8 @@ class FileTCP(object):
             os.close(new_file)
             worldmap_chart.render_to_png(self.tempfile_name)
             #wordlmap_chart.render_to_png(self.loading_png_file)
-            if not continuous:
-                self.tempfile_name = None
+            # if not continuous:
+            #     self.tempfile_name = None
         #else:
         #    worldmap_chart.render_to_png(self.tempfile_name)
 
@@ -187,16 +187,16 @@ class FileTCP(object):
         for entry in self.entries:
             if visual == True:
                 self.running = self.game_controller.world()
-            if not self.running:
+            if not self.running and continuous:
                 break
             if entry.resolved_location != None:
                 self.entry_locations[entry.dest_ip] = entry.resolved_location
             else:
                 if entry.resolved_location == None:
-                    print("Resolving still")
-                    print(entry.max_resolve_tries)
+                    # print("Resolving still")
+                    # print(entry.max_resolve_tries)
                     entry.resolve_country()
-                    print(entry.max_resolve_tries)
+                    # print(entry.max_resolve_tries)
                 if entry.resolved_location != None:
                     self.entry_locations[entry.dest_ip] = entry.resolved_location
 
@@ -205,24 +205,27 @@ class FileTCP(object):
             for item in self.entry_locations.keys():
                 val = self.entry_locations[item]
                 worldmap_chart.add(item, val)
+                print('test')
+                print('added: ' + str(item) + ' ... ' + str(val))
         elif mode == 'heatmap':
             worldmap_chart.add('Heatmap', self.entry_locations.values())
 
-        print("Pringig deb ug entries retry: ")
-        for entry in self.entries:
-            print("aaa")
-            print(entry.dest_ip)
-            print(entry.max_resolve_tries)
-            print("aaa")
+        # print("Pringig deb ug entries retry: ")
+        # for entry in self.entries:
+        #     print("aaa")
+        #     print(entry.dest_ip)
+        #     print(entry.max_resolve_tries)
+        #     print("aaa")
 
         print("Before sleep")
         time.sleep(1)
         print("After sleep")
+        #if continuous:
         worldmap_chart.render_to_png(self.tempfile_name)
         time.sleep(1)
         print("slept after load")
 
-        self.last_write_name = self.tempfile_name
+        #self.last_write_name = self.tempfile_name
         if not continuous:
             self.tempfile_name = None
         if visual == True:

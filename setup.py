@@ -21,7 +21,6 @@ setup(
         'pygame',
         'python-whois', #TODO: check for whois package, conflicting?
         'cairosvg',
-        'pygeoip'
     ],
     packages=find_packages(exclude=['tests']),
     include_package_data=True,
