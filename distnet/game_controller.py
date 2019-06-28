@@ -39,25 +39,3 @@ class GameController:
             if event.type == pygame.QUIT:
                 return False
         return True
-###
-
-#
-# gameDisplay = None
-# if args.visual == True:
-#     pygame.init()
-#     pygame.mixer.quit()
-#     gameDisplay = pygame.display.set_mode((800, 600))
-#     pygame.display.set_caption('Visualizer')
-#
-# if args.visual == True:
-#     clock = pygame.time.Clock()
-#
-
-
-
-# world(0, 0, gameDisplay, ftcp.tempfile_name)
-# pygame.display.update()
-# clock.tick(24)
-# for event in pygame.event.get():
-#     if event.type == pygame.QUIT:
-#         running = False
