@@ -15,10 +15,6 @@ def resolve_hostname(dest_ip):
         Try to query hostname.
     """
 
-    #limit_flood = 0.116
-    #TODO: pass from __main__
-    #time.sleep(limit_flood)
-
     try:
         return str(socket.gethostbyaddr(dest_ip)[0])
     except socket.herror as he:
@@ -39,10 +35,8 @@ def resolve_location(hostname, ip=None, verbose=True):
 
     # geoip determination
     if (ip):
-        print("Trying to lookup geoip with ")
-        print(ip.encode())
-        print(type(ip))
-        #geoip_response = geolite2.lookup(ip.encode())
+        print("Trying to lookup geoip with {0}".format(ip))
+
         gc = GeoIP_Controller()
         geoip_response = gc.search_CIDR_location(ip)
         if geoip_response is not None:

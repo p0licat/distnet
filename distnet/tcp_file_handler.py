@@ -64,17 +64,8 @@ class FileTCP(object):
         if self.data is None:
             raise FileTCP_InitError("Fatal error, no data to parse.", "Tried with path: {0}".format(self.path))
 
-        # print("COPY DATA")
-        # if self.entries != None:
-        #     for item in self.entries:
-        #         print("OE")
-        #         print(item.dest_ip)
-        #         print(item.max_resolve_tries)
-        #     print("END")
         self.old_entries = self.entries
         self.entries = self.data.split("\n")
-
-
 
         # delete non-entry lines
         while True:
@@ -112,7 +103,6 @@ class FileTCP(object):
             if done:
                 break
 
-        # print("transit")
         if self.old_entries != None:
             for item in self.old_entries:
                 found = False
@@ -121,12 +111,7 @@ class FileTCP(object):
                         found = True
 
                 if not found:
-                    # print("appending item")
-                    # print(item.dest_ip)
-                    # print(item.max_resolve_tries)
                     self.entries.append(item)
-                    # print(self.entries)
-                    # print("end append")
                 else:
                     print("EXCEPT")
 
@@ -193,10 +178,7 @@ class FileTCP(object):
                 self.entry_locations[entry.dest_ip] = entry.resolved_location
             else:
                 if entry.resolved_location == None:
-                    # print("Resolving still")
-                    # print(entry.max_resolve_tries)
                     entry.resolve_country()
-                    # print(entry.max_resolve_tries)
                 if entry.resolved_location != None:
                     self.entry_locations[entry.dest_ip] = entry.resolved_location
 
@@ -210,75 +192,16 @@ class FileTCP(object):
         elif mode == 'heatmap':
             worldmap_chart.add('Heatmap', self.entry_locations.values())
 
-        # print("Pringig deb ug entries retry: ")
-        # for entry in self.entries:
-        #     print("aaa")
-        #     print(entry.dest_ip)
-        #     print(entry.max_resolve_tries)
-        #     print("aaa")
-
-        print("Before sleep")
         time.sleep(1)
-        print("After sleep")
-        #if continuous:
         worldmap_chart.render_to_png(self.tempfile_name)
         time.sleep(1)
-        print("slept after load")
 
-        #self.last_write_name = self.tempfile_name
+
         if not continuous:
             self.tempfile_name = None
         if visual == True:
             self.running = self.game_controller.world()
 
-
-    # TODO: testing for removal
-    # def draw_map_v2(self, mode=None, continuous=None):
-    #     """
-    #         Generate map from stored entries property.
-    #     """
-    #     for entry in self.entries:
-    #
-    #         if str(entry.dest_ip) not in self.entry_hostnames:
-    #             rhn = ""
-    #             try:
-    #                 rhn = resolve_hostname(str(entry.dest_ip))
-    #             except socket.gaierror as ge:
-    #                 rhn = "UNKNOWN_HOSTNAME"
-    #             if rhn != "":
-    #                 self.entry_hostnames[str(entry.dest_ip)] = rhn
-    #
-    #         if str(str(entry.dest_ip)) not in self.entry_locations:
-    #             if str(str(entry.dest_ip)) in self.entry_hostnames:
-    #                 self.entry_locations[str(entry.dest_ip)] = resolve_location(self.entry_hostnames[str(entry.dest_ip)])
-    #
-    #     worldmap_chart = pygal.maps.world.World()
-    #     worldmap_chart.title = 'Some countries'
-    #
-    #     if mode == None or mode == 'flag':
-    #         for item in self.entry_locations.keys():
-    #             val = self.entry_locations[item]
-    #             worldmap_chart.add(item, val)
-    #     elif mode == 'heatmap':
-    #         worldmap_chart.add('Heatmap', self.entry_locations.values())
-    #
-    #
-    #     if self.tempfile_name == None:
-    #         new_file, filename = tempfile.mkstemp()
-    #         self.tempfile_name = filename
-    #         self.last_write_name = self.tempfile_name
-    #
-    #         self.tempfile_handler = new_file
-    #         os.close(new_file)
-    #         worldmap_chart.render_to_png(self.tempfile_name)
-    #         if not continuous:
-    #             self.tempfile_name = None
-    #     else:
-    #         worldmap_chart.render_to_png(self.tempfile_name)
-    #         self.last_write_name = self.tempfile_name
-    #         if not continuous:
-    #             self.tempfile_name = None
-    #
 
     def print_entries(self, resolve=False):
         """

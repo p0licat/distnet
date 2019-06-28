@@ -66,35 +66,12 @@ class GeoIP_Controller():
             else:
                 self.__blocks_dict[cdir_ip_firstbits].append(item)
 
-        # print(self.__blocks_dict)
-        # assert False
 
-    #
-    # def search_CIDR_location_v1(self, normal_ip):
-    #     for line in self.__blocks_list[1:]:
-    #         if line == "":
-    #             continue
-    #         lsplit = line.split(',')
-    #         cidr_ip_string = lsplit[0]
-    #         country_geoname_id = lsplit[2]
-    #
-    #         if cidr_ip_string.split('.')[0] != normal_ip.split('.')[0]:
-    #             continue
-    #
-    #         hosts_list = list(ipaddress.ip_network(cidr_ip_string).hosts())
-    #         for item in hosts_list:
-    #             if item.exploded == normal_ip:
-    #                 return self.__locations_dict[country_geoname_id]
-    #
-    #     return None
     def search_CIDR_location(self, normal_ip):
 
         firstbits=normal_ip.split('.')[0]
 
-        # print(self.__blocks_dict[firstbits])
-        # assert False
         for line in self.__blocks_dict[firstbits]:
-            #print(line)
             lsplit = line.split(',')
             cidr_ip_string = lsplit[0]
             country_geoname_id = lsplit[2]
@@ -109,20 +86,5 @@ class GeoIP_Controller():
                         return self.__locations_dict[country_geoname_id]
                     else:
                         return None
-
-        # for line in self.__blocks_list[1:]:
-        #     if line == "":
-        #         continue
-        #     lsplit = line.split(',')
-        #     cidr_ip_string = lsplit[0]
-        #     country_geoname_id = lsplit[2]
-        #
-        #     if cidr_ip_string.split('.')[0] != normal_ip.split('.')[0]:
-        #         continue
-        #
-        #     hosts_list = list(ipaddress.ip_network(cidr_ip_string).hosts())
-        #     for item in hosts_list:
-        #         if item.exploded == normal_ip:
-        #             return self.__locations_dict[country_geoname_id]
 
         return None
