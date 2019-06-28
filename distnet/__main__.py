@@ -95,7 +95,8 @@ def main():
             if args.output == None:
 
                 if args.resolve == True:
-                    print("Resolving addresses...")
+                    if args.verbose == True:
+                        print("Resolving addresses...")
                     ftcp.attempt_resolves()
                 en = ftcp.get_entries()
                 if ftcp.read_changed:
@@ -120,11 +121,16 @@ def main():
                 #         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
                 time.sleep(1)
             else:
+                if args.verbose == True:
+                    print("Attempting resolves...")
                 ftcp.attempt_resolves()
+                if args.verbose:
+                    print("Resolved.")
                 en = ftcp.get_entries()
                 args.output[0].close()
                 ic = IO_Ctl(args.output[0].name)
                 ic.write_to_file(en)
+                time.sleep(1)
                 # for entry in en:
                 #     if entry.dest_ip not in history_ips.keys():
                 #         history_ips[entry.dest_ip] = True
