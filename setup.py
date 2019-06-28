@@ -3,7 +3,7 @@ from pkg_resources import resource_filename
 # import pkg_resources
 
 
-__version__ = '0.1.603'
+__version__ = '0.1.610'
 
 versionFile = resource_filename(__name__, 'distnet/resources/VERSION')
 

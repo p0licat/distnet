@@ -257,3 +257,15 @@ def test_draw_map_v3_heatmap(FileTCP_testing):
 
     # second render_to_png
     tcpf.draw_map_v3(mode='heatmap')
+
+
+# def test_draw_map_v3_heatmap_visual(FileTCP_testing):
+#
+#     tcpf = FileTCP_testing
+#     tcpf.read_tcp_struct()
+#     tcpf.draw_map_v3(mode='heatmap')
+#     #assert tcpf.tempfile_name != None
+#     #assert os.path.isfile(tcpf.tempfile_name)
+#
+#     # second render_to_png
+#     tcpf.draw_map_v3(mode='heatmap', visual=True)
