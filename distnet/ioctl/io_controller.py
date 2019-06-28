@@ -57,7 +57,7 @@ class IO_Ctl:
                 r_location = line[2]
 
                 try:
-                    etcp = EntryTCP("0: F100A8C0:CDF4 E511D9AC:01BB 01 00000000:00000000 00:00000000 00000000  1000        0 29965 1 ffff932537491800 24 4 30 10 -1")
+                    etcp = EntryTCP("0: 00000000:0000 00000000:0000 01 00000000:00000000 00:00000000 00000000  1000        0 29965 1 ffff932537491800 24 4 30 10 -1")
                     etcp.dest_ip = dest_ip
                     etcp.resolved_hostname = r_hostname
                     etcp.resolved_location = r_location

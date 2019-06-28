@@ -217,3 +217,12 @@ class FileTCP(object):
                 except socket.gaierror as ge:
                     resolved_host = "UNKNOWN_HOSTNAME"
                 sys.stdout.write(str(item).rstrip() + " \t" + str(resolved_host) + " "  + " " + '\n')
+
+    def attempt_resolves(self):
+        for entry in self.entries:
+            # print("rl: ")
+            # print(entry.resolved_location)
+            if entry.resolved_location == None:
+                entry.resolve_country()
+            # print(entry.resolved_location)
+            # print("/rl")

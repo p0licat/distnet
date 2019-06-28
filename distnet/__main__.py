@@ -12,6 +12,7 @@ import sys
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 
+from ioctl.io_controller import IO_Ctl
 from network_controller import resolve_hostname
 from tcp_file_handler import FileTCP
 from os_check import os_filesystem_check
@@ -43,9 +44,9 @@ def main():
     parser.add_argument("-v", "--verbose", action="store_true", help="verbose output")
     parser.add_argument("-c", "--continuous", action="store_true", help="continuously update output")
     parser.add_argument("-r", "--resolve", action="store_true", help="resolve ip addresses to hostnames")
+    parser.add_argument("-o", "--output", action="append", help="file to write to", type=argparse.FileType('w'))
     parser.add_argument("--visual", action="store_true", help="draw on world map (use with -c)")
     parser.add_argument("--version", action="store_true", help="prints version of this package")
-    parser.add_argument("--output", action="append", help="file to write to", type=argparse.FileType('w'))
     parser.add_argument("--mode", action="append", help="heatmap or flag")
 
 
@@ -78,10 +79,6 @@ def main():
     # sys.stderr = redir_stderr
 
     time_sleep = 1 # TODO: default-valued int argument argparse
-
-    if args.output != None:
-        fd_args = args.output[0]
-        sys.stdout = fd_args
 
     if args.continuous == True:
         history_ips = dict()
@@ -118,27 +115,35 @@ def main():
                         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
                 time.sleep(1)
             else:
+                ftcp.attempt_resolves()
                 en = ftcp.get_entries()
-                for entry in en:
-                    if entry.dest_ip not in history_ips.keys():
-                        history_ips[entry.dest_ip] = True
-                        ns_formatted = ""
-
-                        if args.resolve == True:
-                            resolved_hostname = ""
-                            try:
-                                resolved_hostname = resolve_hostname(entry.dest_ip)
-                            except socket.gaierror as ge:
-                                resolved_hostname = "UNKNOWN_HOSTNAME"
-                            ns_formatted += " " + resolved_hostname + " "  + " "
-
-                        sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
+                args.output[0].close()
+                ic = IO_Ctl(args.output[0].name)
+                ic.write_to_file(en)
+                # for entry in en:
+                #     if entry.dest_ip not in history_ips.keys():
+                #         history_ips[entry.dest_ip] = True
+                #         ns_formatted = ""
+                #
+                #         if args.resolve == True:
+                #             resolved_hostname = ""
+                #             try:
+                #                 resolved_hostname = resolve_hostname(entry.dest_ip)
+                #             except socket.gaierror as ge:
+                #                 resolved_hostname = "UNKNOWN_HOSTNAME"
+                #             ns_formatted += " " + resolved_hostname + " "  + " "
+                #
+                #         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
 
             if args.visual == True:
                 ftcp.draw_map_v3(mode = args.mode, continuous = args.continuous, visual=True)
 
             sys.stdout.flush()
     else:
+        if args.output != None:
+            fd_args = args.output[0]
+            sys.stdout = fd_args
+
         ftcp = FileTCP('/proc/net/tcp')
         ftcp.read_tcp_struct()
 
@@ -156,7 +161,7 @@ def main():
     sys.stdout.write("Done.\n")
 
     if args.output != None:
-        args.output.close()
+        args.output[0].close()
 
     exit(0)
 
