@@ -20,12 +20,40 @@ class IO_Ctl:
         with open(self.__filePath, 'r') as fd:
             print(fd.read().split('\n'))
 
+    @staticmethod
+    def check_entries_list(entries):
+        try:
+            if not isinstance(entries, list):
+                raise TypeError("")
+            for item in entries:
+                if not isinstance(item, EntryTCP):
+                    raise TypeError()
+        except TypeError:
+            return False
+        return True
+
+    @staticmethod
+    def write_to_screen(entries, mode=None):
+        if not IO_Ctl.check_entries_list(entries):
+            return
+
+        for entry in entries:
+            f_str = ""
+            f_str += entry.dest_ip
+
+            if mode == 'host' or mode == 'location':
+                f_str += ','
+                f_str += entry.resolved_hostname
+                f_str += ','
+            if mode == 'location':
+                f_str += entry.resolved_location
+            f_str += '\n'
+
+            print(f_str)
+
     def write_to_file(self, entries):
-        if not isinstance(entries, list):
-            raise TypeError("")
-        for item in entries:
-            if not isinstance(item, EntryTCP):
-                raise TypeError()
+        if not IO_Ctl.check_entries_list(entries):
+            return
 
         try:
             with open(self.__filePath, 'w') as fd:
@@ -41,7 +69,7 @@ class IO_Ctl:
 
                 fd.close()
         except Exception as ex:
-            print(ex)
+            print(ex) # NoneType check!X
             fd.close() #>?
 
     def read_from_file(self):

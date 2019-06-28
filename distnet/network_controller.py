@@ -22,7 +22,7 @@ def resolve_hostname(dest_ip):
     except socket.gaierror as ge:
         raise ge
 
-def resolve_location(hostname, ip=None, verbose=True):
+def resolve_location(hostname, ip=None, verbose=False):
     """
         Try to assign a location to a hostname.
     """
@@ -35,7 +35,8 @@ def resolve_location(hostname, ip=None, verbose=True):
 
     # geoip determination
     if (ip):
-        print("Trying to lookup geoip with {0}".format(ip))
+        if verbose == True:
+            print("Trying to lookup geoip with {0}".format(ip))
 
         gc = GeoIP_Controller()
         geoip_response = gc.search_CIDR_location(ip)
@@ -46,7 +47,8 @@ def resolve_location(hostname, ip=None, verbose=True):
     if hostname != "":
         for i in range(3):
             if verbose:
-                print("Attempting to resolve location: "  + hostname)
+                if verbose == True:
+                    print("Attempting to resolve location: "  + hostname)
 
             try:
                 whois_response = whois.whois(hostname)
@@ -82,5 +84,7 @@ def resolve_location(hostname, ip=None, verbose=True):
     elif tld_string != None:
         return tld_string
 
-    print(rloc)
+    if verbose == True:
+        print(rloc)
+
     return rloc
