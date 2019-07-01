@@ -1,8 +1,6 @@
 env: TRAVIS=str_true CODECOV_TOKEN="80c28008-de4c-47e2-84b9-bbb36d089ec0"
 language: python
 python:
-- '3.4'
-- '3.5'
 - '3.6'
 before_install: pip install codecov
 install:
