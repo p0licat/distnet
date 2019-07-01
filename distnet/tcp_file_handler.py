@@ -193,7 +193,7 @@ class FileTCP(object):
             for item in self.entry_locations.keys():
                 val = self.entry_locations[item]
                 worldmap_chart.add(item, val)
-                print('test')
+                #print('test')
                 print('added: ' + str(item) + ' ... ' + str(val))
         elif mode == 'heatmap':
             worldmap_chart.add('Heatmap', self.entry_locations.values())

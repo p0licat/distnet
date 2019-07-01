@@ -101,24 +101,7 @@ def main():
                 en = ftcp.get_entries()
                 if ftcp.read_changed:
                     IO_Ctl.write_to_screen(en, mode='location' if args.resolve == True else None)
-                # #if args.verbose == True:
-                # for entry in en:
-                #     # todo: change if for max_tries
-                #     if entry.dest_ip not in history_ips.keys():
-                #         history_ips[entry.dest_ip] = True
-                #         ns_formatted = ""
-                #
-                #         if args.resolve == True:
-                #             resolved_hostname = ""
-                #             try:
-                #                 if entry.resolved_hostname == None and entry.resolved_location == None:
-                #                     entry.resolve_country()
-                #                 resolved_hostname = entry.resolved_hostname
-                #             except socket.gaierror as ge:
-                #                 resolved_hostname = "UNKNOWN_HOSTNAME"
-                #             ns_formatted += " " + resolved_hostname + " "  + " "
-                #
-                #         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
+
                 time.sleep(1)
             else:
                 if args.verbose == True:
@@ -129,22 +112,9 @@ def main():
                 en = ftcp.get_entries()
                 args.output[0].close()
                 ic = IO_Ctl(args.output[0].name)
+                #print("Writing to file...")
                 ic.write_to_file(en)
                 time.sleep(1)
-                # for entry in en:
-                #     if entry.dest_ip not in history_ips.keys():
-                #         history_ips[entry.dest_ip] = True
-                #         ns_formatted = ""
-                #
-                #         if args.resolve == True:
-                #             resolved_hostname = ""
-                #             try:
-                #                 resolved_hostname = resolve_hostname(entry.dest_ip)
-                #             except socket.gaierror as ge:
-                #                 resolved_hostname = "UNKNOWN_HOSTNAME"
-                #             ns_formatted += " " + resolved_hostname + " "  + " "
-                #
-                #         sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
 
             if args.visual == True:
                 ftcp.draw_map_v3(mode = args.mode, continuous = args.continuous, visual=True)
