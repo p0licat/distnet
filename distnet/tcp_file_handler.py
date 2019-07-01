@@ -40,6 +40,7 @@ class FileTCP(object):
 
         self.game_controller = None
         self.running = True
+        self.read_changed = False
 
         if not isinstance(path, str) or path == "":
             raise FileTCP_InitError("Not a valid path string: ", "{0}".format(path))
@@ -103,12 +104,17 @@ class FileTCP(object):
             if done:
                 break
 
+        #print(self.read_changed)
+        self.read_changed = True if len(self.entries) != 0 else False
+
         if self.old_entries != None:
             for item in self.old_entries:
                 found = False
+                #print(len(self.entries))
                 for item_new in self.entries:
                     if str(item) == str(item_new):
                         found = True
+                        print("found some")
 
                 if not found:
                     self.entries.append(item)
@@ -187,7 +193,7 @@ class FileTCP(object):
             for item in self.entry_locations.keys():
                 val = self.entry_locations[item]
                 worldmap_chart.add(item, val)
-                print('test')
+                #print('test')
                 print('added: ' + str(item) + ' ... ' + str(val))
         elif mode == 'heatmap':
             worldmap_chart.add('Heatmap', self.entry_locations.values())
@@ -217,3 +223,12 @@ class FileTCP(object):
                 except socket.gaierror as ge:
                     resolved_host = "UNKNOWN_HOSTNAME"
                 sys.stdout.write(str(item).rstrip() + " \t" + str(resolved_host) + " "  + " " + '\n')
+
+    def attempt_resolves(self):
+        for entry in self.entries:
+            # print("rl: ")
+            # print(entry.resolved_location)
+            if entry.resolved_location == None:
+                entry.resolve_country()
+            # print(entry.resolved_location)
+            # print("/rl")

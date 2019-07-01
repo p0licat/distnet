@@ -4,8 +4,8 @@
 
 Visualizer for tcp connections. Ports 53 and 43 should accept connections for full functionality.
 
-[![Build Status](https://travis-ci.org/p0licat/distnet.svg?branch=develop_geoip)](https://travis-ci.org/p0licat/distnet)
-[![codecov](https://codecov.io/gh/p0licat/distnet/branch/develop_geoip/graph/badge.svg)](https://codecov.io/gh/p0licat/distnet)
+[![Build Status](https://travis-ci.org/p0licat/distnet.svg?branch=develop_outputfile)](https://travis-ci.org/p0licat/distnet)
+[![codecov](https://codecov.io/gh/p0licat/distnet/branch/develop_outputfile/graph/badge.svg)](https://codecov.io/gh/p0licat/distnet)
 [![PyPI version](https://badge.fury.io/py/distnet.svg)](https://badge.fury.io/py/distnet)
 
 
