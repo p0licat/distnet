@@ -8,6 +8,7 @@ sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 from tcp_file_handler import FileTCP
 from tcp_file_entry import EntryTCP
 from ioctl import io_controller
+from ioctl.io_controller import IO_Ctl
 import pytest
 
 @pytest.fixture
@@ -54,6 +55,37 @@ def test_IO_write(FileTCP_testing, IO_Ctl_fixture):
 
     with open('tests/chroot/home/testinput', 'r') as fd:
         assert len(fd.read()) > 1
+
+
+def test_IO_write_screen(FileTCP_testing, IO_Ctl_fixture):
+    ftcp = FileTCP_testing
+    ftcp.read_tcp_struct()
+    elist = ftcp.get_entries()
+    for entry in elist:
+        entry.resolve_country() # waiting for pull
+    try:
+        IO_Ctl.write_to_screen(elist)
+    except Exception as ex:
+        print(ex)
+        assert False
+
+def test_IO_write_screen(FileTCP_testing, IO_Ctl_fixture):
+    ftcp = FileTCP_testing
+    ftcp.read_tcp_struct()
+    elist = ftcp.get_entries()
+    for entry in elist:
+        entry.resolve_country() # waiting for pull
+    try:
+        IO_Ctl.write_to_screen(elist, mode='location')
+    except Exception as ex:
+        print(ex)
+        assert False
+
+def test_IO_Ctl_print(IO_Ctl_fixture):
+    try:
+        IO_Ctl_fixture.print_data()
+    except Exception as ex:
+        assert False
 
 def test_IO_read(FileTCP_testing, IO_Ctl_fixture):
     ftcp = FileTCP_testing

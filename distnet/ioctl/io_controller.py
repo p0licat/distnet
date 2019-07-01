@@ -55,22 +55,20 @@ class IO_Ctl:
         if not IO_Ctl.check_entries_list(entries):
             return
 
-        try:
-            with open(self.__filePath, 'w') as fd:
-                for entry in entries:
-                    f_str = ""
-                    f_str += entry.dest_ip
-                    f_str += ','
-                    f_str += entry.resolved_hostname
-                    f_str += ','
-                    f_str += entry.resolved_location
-                    f_str += '\n'
-                    fd.write(f_str)
 
-                fd.close()
-        except Exception as ex:
-            print(ex) # NoneType check!X
-            fd.close() #>?
+        with open(self.__filePath, 'w') as fd:
+            for entry in entries:
+                f_str = ""
+                f_str += entry.dest_ip
+                f_str += ','
+                f_str += entry.resolved_hostname
+                f_str += ','
+                f_str += entry.resolved_location
+                f_str += '\n'
+                fd.write(f_str)
+
+            fd.close()
+
 
     def read_from_file(self):
         r_entries = list()
@@ -84,14 +82,12 @@ class IO_Ctl:
                 r_hostname = line[1]
                 r_location = line[2]
 
-                try:
-                    etcp = EntryTCP("0: 00000000:0000 00000000:0000 01 00000000:00000000 00:00000000 00000000  1000        0 29965 1 ffff932537491800 24 4 30 10 -1")
-                    etcp.dest_ip = dest_ip
-                    etcp.resolved_hostname = r_hostname
-                    etcp.resolved_location = r_location
-                    r_entries.append(etcp)
-                except Exception as ex:
-                    print(ex)
-                    continue
+
+                etcp = EntryTCP("0: 00000000:0000 00000000:0000 01 00000000:00000000 00:00000000 00000000  1000        0 29965 1 ffff932537491800 24 4 30 10 -1")
+                etcp.dest_ip = dest_ip
+                etcp.resolved_hostname = r_hostname
+                etcp.resolved_location = r_location
+                r_entries.append(etcp)
+
 
         return r_entries
