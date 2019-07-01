@@ -1,27 +1,24 @@
-env:
-  TRAVIS=str_true
-  CODECOV_TOKEN="80c28008-de4c-47e2-84b9-bbb36d089ec0"
+env: TRAVIS=str_true CODECOV_TOKEN="80c28008-de4c-47e2-84b9-bbb36d089ec0"
 language: python
 python:
-  - "3.4"
-  - "3.5"
-  - "3.6"
-
-# command to install dependencies
-before_install:
-    pip install codecov
-
+- '3.4'
+- '3.5'
+- '3.6'
+before_install: pip install codecov
 install:
-  - pip3 install pytest-cov
-  - pip3 install pytest
-  - pip3 install .
-# command to run tests
+- pip3 install pytest-cov
+- pip3 install pytest
+- pip3 install .
 script:
-  - chmod 000 tests/chroot/proc/net/notaccessible
-  - python3 -m pytest tests/ --cov=distnet/ --cov-report term-missing
-
+- chmod 000 tests/chroot/proc/net/notaccessible
+- python3 -m pytest tests/ --cov=distnet/ --cov-report term-missing
 after_success:
-  - ls -laR
-  - codecov
-  - codecov -e
-  - ls -la
+- ls -laR
+- codecov
+- codecov -e
+- ls -la
+deploy:
+  provider: pypi
+  user: p0licat
+  password:
+    secure: pQsP6vrrOvxa6FCwbZPoD5G1ToYbvSBfuxyugVbJmRaLxRmbw9xm893Wxztka5WjtItLVPrst/dNYvhLxHSArd5es/lG2qL8tmlenCt1TcCiogA+obgqZ1yArxe/ifoIyAr/j2Bdxqf0RlykrMho3IZUFE1yw/sftQlRY31YrZatMZF2e7IfubJxeDr0dYCTo3LslFaXDhdXrm/1jE7aKh6t8BGs27nLiYcrnAd3swyEt0oC7dHP+mffX2lqraSSAnUkWo4KWICjsTElEgwOM8UIptd33JzTZMu/1lLFHU2Anf3mSe649XFf3rLHM3ZWbOQD2d7Ox3L1x4GWezKTTo5SV+BU1BZXiE9Uz/mG3LnZT+XCMPyYBqnG2FfStyhOYrAmTK3eZ2mFUu/AkIObSiLU4mdz31sxkH4fgFPrlnxDMxyfUxRo/4CCAsS5diNBPCgs4FTA4D7sauKDAUp/1Df4/e56hjhcN9Nai7NBQal5s8kN6wXI8DiS6p0vfSM+wCgp3Na///+UlyaQBoqTpX0b+B0dCX1Q5jQGyW/Y2YSOL5GhvDGQexzhDfdWCVlU8XR/bypWWSFSy62l0/pNEgbBVV2Bpdf1mSdOjtibC0+lcX9beFVdx8xmd7DsYuy6l9zmSxRKZ7lh82HCnV7x7jm3aQyvI9ZsCNN8gJDL0v8=
