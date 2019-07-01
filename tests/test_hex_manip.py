@@ -8,8 +8,8 @@ import pytest
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 
-from hex_manip import hex_dict, int_from_string, ip_from_hex, port_from_hex
-from tcp_structs_exceptions import HexadecimalStringFormatError, \
+from utils.hex_manip import hex_dict, int_from_string, ip_from_hex, port_from_hex
+from tcp.tcp_structs_exceptions import HexadecimalStringFormatError, \
     HexadecimalIpFormatError, HexadecimalPortFormatError
 
 def test_hex_dict():

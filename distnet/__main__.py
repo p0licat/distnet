@@ -2,10 +2,6 @@
     Entry point.
 """
 
-import contextlib
-with contextlib.redirect_stdout(None):
-    import pygame
-
 import signal
 import argparse
 import time
@@ -15,9 +11,10 @@ import sys
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 
-from network_controller import resolve_hostname
-from tcp_file_handler import FileTCP
-from os_check import os_filesystem_check
+from ioctl.io_controller import IO_Ctl
+from networking.network_controller import resolve_hostname
+from tcp.tcp_file_handler import FileTCP
+from utils.os_check import os_filesystem_check
 
 
 import pkg_resources
@@ -33,16 +30,8 @@ with open(versionFile, 'r') as fd:
 
 def signal_handler(sig, frame):
         print('You pressed Ctrl+C!')
-        running = False
         sys.exit(0)
 
-
-#TODO: refactor into game controller class
-def world(x, y, gameDisplay_obj, img_location):
-    try:
-        gameDisplay_obj.blit(pygame.image.load(img_location), (x, y))
-    except pygame.error as pe:
-        print('Image draw error.')
 
 def main():
 
@@ -52,14 +41,18 @@ def main():
 
     parser.add_argument("-t", "--test", action="store_true", help="test os filesystem")
     parser.add_argument("-v", "--verbose", action="store_true", help="verbose output")
-    parser.add_argument("--visual", action="store_true", help="draw on world map (use with -c)")
     parser.add_argument("-c", "--continuous", action="store_true", help="continuously update output")
-    parser.add_argument("--version", action="store_true", help="prints version of this package")
-    parser.add_argument("--output", action="append", help="file to write to", type=argparse.FileType('w'))
     parser.add_argument("-r", "--resolve", action="store_true", help="resolve ip addresses to hostnames")
+    parser.add_argument("-o", "--output", action="append", help="file to write to", type=argparse.FileType('w'))
+    parser.add_argument("--visual", action="store_true", help="draw on world map (use with -c)")
+    parser.add_argument("--version", action="store_true", help="prints version of this package")
+    parser.add_argument("--mode", action="append", help="heatmap or flag")
 
 
     args = parser.parse_args()
+
+    if args.mode != None:
+        args.mode = args.mode[0]
 
     if args.version == True:
         print("Version is: " + str(__version__))
@@ -86,27 +79,12 @@ def main():
 
     time_sleep = 1 # TODO: default-valued int argument argparse
 
-    if args.output != None:
-        fd_args = args.output[0]
-        sys.stdout = fd_args
-
     if args.continuous == True:
         history_ips = dict()
         cdict = dict()
 
-        gameDisplay = None
-        if args.visual == True:
-            pygame.init()
-            pygame.mixer.quit()
-            gameDisplay = pygame.display.set_mode((800, 600))
-            pygame.display.set_caption('Visualizer')
-
-        if args.visual == True:
-            clock = pygame.time.Clock()
-
         ftcp = FileTCP('/proc/net/tcp')
-        running = True
-        while running:
+        while ftcp.running:
 
             ftcp.read_tcp_struct()
 
@@ -115,56 +93,37 @@ def main():
 
             if args.output == None:
 
+                if args.resolve == True:
+                    if args.verbose == True:
+                        print("Resolving addresses...")
+                    ftcp.attempt_resolves()
                 en = ftcp.get_entries()
+                if ftcp.read_changed:
+                    IO_Ctl.write_to_screen(en, mode='location' if args.resolve == True else None)
 
-                for entry in en:
-                    if entry.dest_ip not in history_ips.keys():
-                        history_ips[entry.dest_ip] = True
-                        ns_formatted = ""
-
-                        # continuous mode
-
-
-                        if args.resolve == True:
-                            resolved_hostname = ""
-                            try:
-                                resolved_hostname = resolve_hostname(entry.dest_ip)
-                            except socket.gaierror as ge:
-                                resolved_hostname = "UNKNOWN_HOSTNAME"
-                            ns_formatted += " " + resolved_hostname + " "  + " "
-
-                        sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
+                time.sleep(1)
             else:
+                if args.verbose == True:
+                    print("Attempting resolves...")
+                ftcp.attempt_resolves()
+                if args.verbose:
+                    print("Resolved.")
                 en = ftcp.get_entries()
-                for entry in en:
-                    if entry.dest_ip not in history_ips.keys():
-                        history_ips[entry.dest_ip] = True
-                        ns_formatted = ""
-
-                        if args.resolve == True:
-                            resolved_hostname = ""
-                            try:
-                                resolved_hostname = resolve_hostname(entry.dest_ip)
-                            except socket.gaierror as ge:
-                                resolved_hostname = "UNKNOWN_HOSTNAME"
-                            ns_formatted += " " + resolved_hostname + " "  + " "
-
-                        sys.stdout.write(entry.dest_ip + ns_formatted + '\n')
+                args.output[0].close()
+                ic = IO_Ctl(args.output[0].name)
+                #print("Writing to file...")
+                ic.write_to_file(en)
+                time.sleep(1)
 
             if args.visual == True:
-                ftcp.draw_map_v2()
+                ftcp.draw_map_v3(mode = args.mode, continuous = args.continuous, visual=True)
 
-                world(0, 0, gameDisplay, ftcp.tempfile_name)
-                pygame.display.update()
-                clock.tick(24)
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        running = False
-
-
-            #time.sleep(1)
             sys.stdout.flush()
     else:
+        if args.output != None:
+            fd_args = args.output[0]
+            sys.stdout = fd_args
+
         ftcp = FileTCP('/proc/net/tcp')
         ftcp.read_tcp_struct()
 
@@ -174,15 +133,15 @@ def main():
         ftcp.print_entries(resolve=args.resolve)
 
         if args.visual == True:
-            ftcp.draw_map_v2(mode='heatmap')
-            print("Wrote image to: " + ftcp.tempfile_name)
+            ftcp.draw_map_v3(mode = args.mode, continuous = args.continuous)
+            print("Wrote image to: " + ftcp.last_write_name)
 
 
     #redir_std.close()
     sys.stdout.write("Done.\n")
 
     if args.output != None:
-        args.output.close()
+        args.output[0].close()
 
     exit(0)
 

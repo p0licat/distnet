@@ -3,7 +3,7 @@ from pkg_resources import resource_filename
 # import pkg_resources
 
 
-__version__ = '0.1.701'
+__version__ = '0.1.703'
 
 versionFile = resource_filename(__name__, 'distnet/resources/VERSION')
 
@@ -19,7 +19,7 @@ setup(
     install_requires=[
         'pygal_maps_world',
         'pygame',
-        'python-whois', #TODO: check for whois package, conflicting?
+        'python-whois',
         'cairosvg',
     ],
     packages=find_packages(exclude=['tests']),
