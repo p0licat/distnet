@@ -154,7 +154,6 @@ class FileTCP(object):
         worldmap_chart = pygal.maps.world.World()
         worldmap_chart.title = 'Some countries'
 
-
         if self.tempfile_name == None:
             new_file, filename = tempfile.mkstemp(suffix='.png')
             self.tempfile_name = str(filename)
@@ -162,12 +161,6 @@ class FileTCP(object):
 
             os.close(new_file)
             worldmap_chart.render_to_png(self.tempfile_name)
-            #wordlmap_chart.render_to_png(self.loading_png_file)
-            # if not continuous:
-            #     self.tempfile_name = None
-        #else:
-        #    worldmap_chart.render_to_png(self.tempfile_name)
-
 
         if visual == True:
             if self.game_controller == None:
@@ -188,12 +181,10 @@ class FileTCP(object):
                 if entry.resolved_location != None:
                     self.entry_locations[entry.dest_ip] = entry.resolved_location
 
-
         if mode == None or mode == 'flag':
             for item in self.entry_locations.keys():
                 val = self.entry_locations[item]
                 worldmap_chart.add(item, val)
-                #print('test')
                 print('added: ' + str(item) + ' ... ' + str(val))
         elif mode == 'heatmap':
             worldmap_chart.add('Heatmap', self.entry_locations.values())
@@ -201,7 +192,6 @@ class FileTCP(object):
         time.sleep(1)
         worldmap_chart.render_to_png(self.tempfile_name)
         time.sleep(1)
-
 
         if not continuous:
             self.tempfile_name = None
@@ -226,9 +216,5 @@ class FileTCP(object):
 
     def attempt_resolves(self):
         for entry in self.entries:
-            # print("rl: ")
-            # print(entry.resolved_location)
             if entry.resolved_location == None:
                 entry.resolve_country()
-            # print(entry.resolved_location)
-            # print("/rl")

@@ -103,14 +103,6 @@ class EntryTCP(object):
 
         self.state = conn_state
 
-        #TODO: exceptoins some time
-        # self.resolved_hostname = self.resolve_hostname()
-        #
-        # try:
-        #     self.resolved_location = self.resolve_country()
-        # except HostnameNotResolvedError:
-        #     print("Not resolved hostname, so can't check where")
-
 
     def resolve_hostname(self):
         resolved_str = None
@@ -126,8 +118,6 @@ class EntryTCP(object):
             resolved_str = None
         self.resolved_hostname = resolved_str
 
-
-        #return True
 
     def resolve_country(self):
         if self.max_resolve_tries < 0:

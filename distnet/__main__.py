@@ -1,6 +1,5 @@
 """
     Entry point.
-    TODO: fix -rc output, -c output, --visual debug output
 """
 
 import signal

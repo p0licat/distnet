@@ -7,7 +7,6 @@ import socket
 import whois
 import time
 
-#import pygeoip
 from mm_geoip_interpreter import GeoIP_Controller
 
 def resolve_hostname(dest_ip):

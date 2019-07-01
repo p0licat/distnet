@@ -74,12 +74,6 @@ def os_filesystem_check(directory, files_list, filetype_pattern):
 
         pattern_filetype = re.compile(r'' + str(filetype_pattern))
 
-        #DEBUG
-        # print(subp_out)
-        # print(type(subp_out))
-        #/dEBUG
-
-
         regex_result = pattern_filetype.search(str(subp_out))
         if not regex_result:
             passed = False
