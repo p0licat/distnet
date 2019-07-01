@@ -7,7 +7,7 @@ import socket
 import whois
 import time
 
-from mm_geoip_interpreter import GeoIP_Controller
+from utils.mm_geoip_interpreter import GeoIP_Controller
 
 def resolve_hostname(dest_ip):
     """

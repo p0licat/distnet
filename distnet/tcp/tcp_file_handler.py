@@ -11,10 +11,10 @@ import tempfile
 
 import pygal
 
-from network_controller import resolve_hostname, resolve_location
-from game_controller import GameController
-from tcp_file_entry import EntryTCP
-from tcp_structs_exceptions import  EntryTCP_Error, \
+from networking.network_controller import resolve_hostname, resolve_location
+from utils.game_controller import GameController
+from tcp.tcp_file_entry import EntryTCP
+from tcp.tcp_structs_exceptions import  EntryTCP_Error, \
                                     EntryTCP_FormatError, \
                                     FileTCP_InitError
 

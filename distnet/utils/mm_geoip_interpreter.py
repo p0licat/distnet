@@ -5,16 +5,12 @@
 import ipaddress
 import pkg_resources
 
-db_path = str(pkg_resources.resource_filename(__name__, 'resources/GeoIP/'))
-
-
+db_path = str(pkg_resources.resource_filename(__name__, '../resources/GeoIP/'))
 
 
 class GeoIP_Controller_ReadDataError(Exception):
     def __init__(self, message):
         super(Exception, self).__init__(message)
-
-
 
 class GeoIP_Controller():
     def __init__(self):

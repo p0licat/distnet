@@ -2,7 +2,7 @@
     Module containing file input and output of distnet data.
 """
 
-from tcp_file_entry import EntryTCP
+from tcp.tcp_file_entry import EntryTCP
 import os
 
 

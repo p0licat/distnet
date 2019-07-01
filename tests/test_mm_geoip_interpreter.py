@@ -9,7 +9,7 @@ import pytest
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 
-from mm_geoip_interpreter import GeoIP_Controller
+from utils.mm_geoip_interpreter import GeoIP_Controller
 
 @pytest.fixture
 def GeoIP_Controller_Instance():

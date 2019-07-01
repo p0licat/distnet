@@ -5,8 +5,8 @@ import sys
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 
-from tcp_file_handler import FileTCP
-from tcp_file_entry import EntryTCP
+from tcp.tcp_file_handler import FileTCP
+from tcp.tcp_file_entry import EntryTCP
 from ioctl import io_controller
 from ioctl.io_controller import IO_Ctl
 import pytest

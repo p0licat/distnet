@@ -12,11 +12,11 @@ sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 import re
 import pytest
 
-from tcp_structs import C_STATE
-from tcp_file_entry import EntryTCP
-from hex_manip import int_from_string
+from tcp.tcp_structs import C_STATE
+from tcp.tcp_file_entry import EntryTCP
+from utils.hex_manip import int_from_string
 
-from distnet.tcp_structs_exceptions import EntryTCP_Error, EntryTCP_InitError, \
+from distnet.tcp.tcp_structs_exceptions import EntryTCP_Error, EntryTCP_InitError, \
     EntryTCP_FormatError
 
 def check_field_ip(field):

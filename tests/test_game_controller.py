@@ -9,7 +9,7 @@ import pytest
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 
-from game_controller import GameController
+from utils.game_controller import GameController
 
 def test_game_controller_withfile():
     if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "str_true":
@@ -54,7 +54,7 @@ def test_game_controller_withfile():
 def test_game_controller_nofile_exception():
     if "TRAVIS" in os.environ and os.environ["TRAVIS"] == "str_true":
         pytest.skip("TravisCI does not support.")
-        
+
     game_controller = None
     tempfile_name = None
     visual = True

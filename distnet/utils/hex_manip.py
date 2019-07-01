@@ -4,8 +4,8 @@
 """
 
 
-from tcp_structs_exceptions import HexadecimalIpFormatError, \
-    HexadecimalPortFormatError, HexadecimalStringFormatError
+from tcp.tcp_structs_exceptions import HexadecimalIpFormatError, \
+        HexadecimalPortFormatError, HexadecimalStringFormatError
 
 
 def hex_dict():

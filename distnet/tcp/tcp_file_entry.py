@@ -4,14 +4,14 @@
 
 
 import socket
-import network_controller
 
 
-from hex_manip import ip_from_hex, port_from_hex, int_from_string
-from tcp_structs_exceptions import  EntryTCP_FormatError, \
-                                    EntryTCP_InitError, \
-                                    HostnameNotResolvedError
-from tcp_structs import C_STATE
+from networking import network_controller
+from utils.hex_manip import ip_from_hex, port_from_hex, int_from_string
+from tcp.tcp_structs_exceptions import  EntryTCP_FormatError, \
+                                        EntryTCP_InitError, \
+                                        HostnameNotResolvedError
+from tcp.tcp_structs import C_STATE
 
 
 class EntryTCP(object):

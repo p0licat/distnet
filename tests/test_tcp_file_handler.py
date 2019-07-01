@@ -6,19 +6,18 @@ import pytest
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/.."))
 sys.path.append(os.path.realpath(os.path.dirname(__file__)+"/../distnet"))
 
-# import distnet
-from tcp_structs import C_STATE
-from tcp_structs_exceptions import EntryTCP_FormatError
-from tcp_file_handler import FileTCP
-from tcp_file_entry import EntryTCP
-from hex_manip import int_from_string
+from tcp.tcp_structs import C_STATE
+from tcp.tcp_structs_exceptions import EntryTCP_FormatError
+from tcp.tcp_file_handler import FileTCP
+from tcp.tcp_file_entry import EntryTCP
+from utils.hex_manip import int_from_string
 
 from tests.test_tcp_file_entry import   check_field_ip, \
                                         check_field_string, \
                                         check_field_port, \
                                         check_field_state
 
-from distnet.tcp_structs_exceptions import FileTCP_Error, FileTCP_InitError
+from distnet.tcp.tcp_structs_exceptions import FileTCP_Error, FileTCP_InitError
 #regular patterns for /proc/net/tcp file
 re_ipaddr_mchr = re.compile(r'[\.0-9]')
 re_port_mchr = re.compile(r'[0-9]')
