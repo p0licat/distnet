@@ -20,5 +20,6 @@ deploy:
   user: p0licat
   password:
     secure: j8OjKEi/erv43M9+fVqySIg+J6OHiAg99LFoncjIoZpCaNOLazJzSDOJxVBpiJRaa+NECBbPvcLs9t6o9zqs+jHBT8YyFCMwYCtajM9keUQ0iY+EsGqNF3Kcn1UcgWw63iFAVKbNebCa2TzNPCbA2SvaFOE9d4O6qgAi69Z7qQDtMy22IcKGsHlxfRDdq9/VB6q8VQmYvlqTtDKKBA7oozHdc4LeAg1BsbNDNiIzYZPXYp/LPuTOaAuWw1Az6QLC1Ny4ojCdjzWRpzCW3G0QEw48di+piloXftcrVUbyUj98FIJks2KxEJHgZ2ccoGaPmwYeP/C5mvwdY+PX2NKF/k4KkyAv+WCr9zvT0XZ1i0QCfkdi1f5xEhEueYJ3Py/VVbfmjOVbyFc1pJ2MDgLy6xjT+x6godlu1aAn5RrMHsBvnEeg4EbgGSKOGc6TvMLfzGVWC0MHmfWzw7moz5CFD93uvklLbETQlst6MIrYuOUX8BiSUKb+QP27Cg2tqacf2rhLzM/RwpJC63DFJgW3s+7Rw00q+4EPn3ajnUFKqH71X7hs5cR/9G7Ynlu6AyEYq+npnnHBs+CADBDVs15u9K30/FGonj9XSNkFYF6DYJVCkOeWmj5KcvHqh5lUyfMKkIpzJx44dnX4SD4MsApnuNk5JRjgQMayi8aY+sPB76E=
+  on:
     branch: master
     condition: $TTRAVIS_EVENT_TYPE != cron
